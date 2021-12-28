@@ -1,3 +1,5 @@
+import core.data.DataSource;
+
 /*
  Represents information about a NWS weather station
 */
@@ -55,6 +57,16 @@ public class WeatherStation {
     */
    public boolean isLocatedInState(String st) {
       return this.state.equals(st);
+   }
+   
+   public Observation getCurrentWeather() {
+	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
+	      ds.setCacheTimeout(15 * 60);  
+	      ds.load();
+	      
+	      Observation ob = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity");
+	      return ob;
+
    }
    
 }

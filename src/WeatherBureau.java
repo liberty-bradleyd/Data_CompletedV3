@@ -77,23 +77,24 @@ public class WeatherBureau {
 	public Observation getColdestInState(String state) {
 		ArrayList<WeatherStation> list = getStationsInState(state);
 		WeatherStation ws = list.get(0);
-		WeatherBot bot = new WeatherBot(ws.getId());
-		Observation ob = bot.getShortObservation();
+//		WeatherBot bot = new WeatherBot(ws.getId());
+//		Observation ob = bot.getShortObservation();
+		Observation ob = ws.getCurrentWeather();
 		double coldestTemp = ob.getTemp();
 		
 		for (int i = 1; i < list.size(); i++) {
 			WeatherStation ws2 = list.get(i);
-			WeatherBot bot2 = new WeatherBot(ws2.getId());
+//			//WeatherBot bot2 = new WeatherBot(ws2.getId());
 			// use try..catch, because sometimes the stations are offline.
 			try {
-				Observation ob2 = bot2.getShortObservation();
-			
+//				//Observation ob2 = bot2.getShortObservation();
+				Observation ob2 = ws2.getCurrentWeather(); //**add
 				if (ob2.getTemp() < coldestTemp) {
 					ob = ob2;
 					coldestTemp = ob.getTemp();
 				}
 			}catch(Exception e) {
-				System.out.println("Error retrieving observeration data for " + ws2.getId() + ": " + ws2.getName());
+				System.out.println("Error retrieving observation data for " + ws2.getId() + ": " + ws2.getName());
 			}
 				
 		}
@@ -147,7 +148,7 @@ public class WeatherBureau {
 		} 
 	}
 	public static void main(String[] args) {
-	   WeatherBureau bureau = new WeatherBureau();
+		WeatherBureau bureau = new WeatherBureau();
 //	   WeatherStation[] stations = bureau.getAllStationsArray();
 //	   for (WeatherStation ws : stations) {
 //		   System.out.println("  " + ws.getId() + ": " + ws.getName());
@@ -164,17 +165,18 @@ public class WeatherBureau {
 	   System.out.println("Total number of stations: " + waStations.size());
 	   
 	   System.out.println();
-	   System.out.println("Getting coldest station in Washington");
-	   Observation ob = bureau.getColdestInState("WA");
-	   System.out.println("Coldest station is - " + ob);
-	   System.out.println(ob);
-	   
-	   System.out.println();
 	   System.out.println("Sorting stations in Washington");
 	   WeatherStation[] filteredStations = bureau.getStationsInStateSortedByName("WA");
 	   for (WeatherStation ws : filteredStations) {
 		   System.out.println("  " + ws.getId() + ": " + ws.getName());
 	   }
+
+	   System.out.println();
+	   System.out.println("Getting coldest station in Washington");
+	   Observation ob = bureau.getColdestInState("WA");
+	   System.out.println("Coldest station is - " + ob);
+	   System.out.println(ob);
+	   
 
 
    }
