@@ -1,0 +1,181 @@
+/*
+ * Arrays and ArrayLists of objects
+ */
+
+import core.data.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class WeatherBureau {
+	WeatherStation[] stations;
+	
+	/**
+	 * Constructor that initializes stations by connecting, loading
+	 * and fetching the weather stations serviced by the National 
+	 * Weather Service
+	 */
+	public WeatherBureau() {
+	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/index.xml").load();
+	      stations = ds.fetchArray("WeatherStation", "station/station_name", 
+	             "station/station_id", "station/state",
+	             "station/latitude", "station/longitude");
+
+	}
+	
+	/**
+	 * Gets all the weather stations as an array
+	 * @return he weather stations as an arrayt
+	 */
+
+	public WeatherStation[] getAllStationsArray() {
+		return stations;
+	}
+	
+	/**
+	 * Gets all the weather stations as an ArrayList
+	 * @return he weather stations as an ArrayList
+	 */
+	public ArrayList<WeatherStation> getAllStationsList(){
+		ArrayList<WeatherStation> list = new ArrayList<WeatherStation>();
+		for (WeatherStation station : stations) {
+			list.add(station);
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * Filters the list of weather stations to the ones in the specified state
+	 * @return the list of weather stations in the specified state
+	 */
+
+	public ArrayList<WeatherStation> getStationsInState(String state){
+		ArrayList<WeatherStation> list = new ArrayList<WeatherStation>();
+		for (WeatherStation station : stations) {
+			if (station.isLocatedInState(state)) {
+					list.add(station);
+			}
+		}
+		
+		return list;
+	}
+	private int getStationsInStateCount(String state) {
+		int count = 0;
+		for (WeatherStation station : stations) {
+			if (station.isLocatedInState(state)) {
+					count++;
+			}
+		}
+		return count;
+		
+	}
+	/**
+	 * Finds the Weather Station in the specified state with the coldest temperature.
+	 * @param state the state
+	 * @return An Observation for the weather station with the coldest temperature
+	 */
+	public Observation getColdestInState(String state) {
+		ArrayList<WeatherStation> list = getStationsInState(state);
+		WeatherStation ws = list.get(0);
+		WeatherBot bot = new WeatherBot(ws.getId());
+		Observation ob = bot.getShortObservation();
+		double coldestTemp = ob.getTemp();
+		
+		for (int i = 1; i < list.size(); i++) {
+			WeatherStation ws2 = list.get(i);
+			WeatherBot bot2 = new WeatherBot(ws2.getId());
+			// use try..catch, because sometimes the stations are offline.
+			try {
+				Observation ob2 = bot2.getShortObservation();
+			
+				if (ob2.getTemp() < coldestTemp) {
+					ob = ob2;
+					coldestTemp = ob.getTemp();
+				}
+			}catch(Exception e) {
+				System.out.println("Error retrieving observeration data for " + ws2.getId() + ": " + ws2.getName());
+			}
+				
+		}
+
+		return ob;
+	}
+	
+	/**
+	 * Gets a list of all weather stations in a state sorted by their name.
+	 * @param state the state
+	 * @return list of all weather stations in a state sorted by their name
+	 */
+
+	public WeatherStation[] getStationsInStateSortedByName(String state) {
+		int filteredSize = getStationsInStateCount(state);
+		WeatherStation[] sortedStations = new WeatherStation[filteredSize];
+		int count = 0;
+		for (WeatherStation station : stations) {
+			if (station.isLocatedInState(state)) {
+				sortedStations[count] = station;
+				count++;
+			}
+		}
+
+		insertionSort(sortedStations);
+		return sortedStations;
+	}
+	/**
+	 * Sorts the array of WeatherStation using the Insertion Sort algorithm
+	 * @param arr the array of WeatherStation
+	 */
+	public void insertionSort(WeatherStation[] arr) {
+		int sortedIndex;
+		WeatherStation newValue;
+
+		// Start at 1,because the 0th element is sorted with itself ​
+
+		for (int index = 1; index < arr.length; index++) {
+
+			// Get a new value to insert into our "sorted" array​
+			newValue = arr[index];
+			sortedIndex = index;
+			// Shift values to right as long as they are greater​
+			// than new value​
+			while (sortedIndex > 0 && arr[sortedIndex - 1].getName().compareTo(newValue.getName()) > 0) {
+				arr[sortedIndex] = arr[sortedIndex - 1];
+				sortedIndex--;
+			}
+			// Place our new value in it's correct position​
+			arr[sortedIndex] = newValue;
+		} 
+	}
+	public static void main(String[] args) {
+	   WeatherBureau bureau = new WeatherBureau();
+//	   WeatherStation[] stations = bureau.getAllStationsArray();
+//	   for (WeatherStation ws : stations) {
+//		   System.out.println("  " + ws.getId() + ": " + ws.getName());
+//	   }
+//	   System.out.println("Total number of stations: " + stations.length);
+//	   
+//	   System.out.println();
+	   
+	   System.out.println("Getting weather stations in Washington");
+	   ArrayList<WeatherStation> waStations = bureau.getStationsInState("WA");
+	   for (WeatherStation ws : waStations) {
+		   System.out.println("  " + ws.getId() + ": " + ws.getName());
+	   }
+	   System.out.println("Total number of stations: " + waStations.size());
+	   
+	   System.out.println();
+	   System.out.println("Getting coldest station in Washington");
+	   Observation ob = bureau.getColdestInState("WA");
+	   System.out.println("Coldest station is - " + ob);
+	   System.out.println(ob);
+	   
+	   System.out.println();
+	   System.out.println("Sorting stations in Washington");
+	   WeatherStation[] filteredStations = bureau.getStationsInStateSortedByName("WA");
+	   for (WeatherStation ws : filteredStations) {
+		   System.out.println("  " + ws.getId() + ": " + ws.getName());
+	   }
+
+
+   }
+}
