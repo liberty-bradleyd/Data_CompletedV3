@@ -149,6 +149,7 @@ public class WeatherBureau {
 	}
 	public static void main(String[] args) {
 		WeatherBureau bureau = new WeatherBureau();
+// this would print out ~2800 weather stations
 //	   WeatherStation[] stations = bureau.getAllStationsArray();
 //	   for (WeatherStation ws : stations) {
 //		   System.out.println("  " + ws.getId() + ": " + ws.getName());
