@@ -64,29 +64,11 @@ public class WeatherBot {
 		   System.out.println("It is warmer at " +ob2.getId() + " than "  + ob3.getId());
 	   }
 	   
-	   System.out.println(getWindConditions(ob2));
-	   System.out.println(getWindConditions(ob3));
+	   System.out.println(ob2.getId() +": " + ob2.getWindConditions());
+	   System.out.println(ob3.getId() +": " + ob3.getWindConditions());
    }
    
-   /**
-    * Returns a string representation of the specified Observation. Summarize the
-    * Beaufort number into 4 categories; calm; breezy; wind flags out; storm 
-    * @param ob The observation
-    * @return a string representation of the specified Observation
-    */
-   public static String getWindConditions(Observation ob) {
-	   String wind = ob.getId() + ": ";
-	   if (ob.getBeaufortNumber() >=10 ) {
-		   wind += "Storm is coming";
-	   }else if (ob.getBeaufortNumber() >= 6 ) {
-		   wind += "Wind flags are out";
-	   }else if (ob.getBeaufortNumber() >= 2) {
-		   wind += "Nice breeze today";
-	   }else {
-		   wind += "Wind is calm";
-	   }
-	   return wind;
-   }
+
 
 }
 

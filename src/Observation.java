@@ -173,7 +173,24 @@ public class Observation implements Comparable{
 		}else {
 			return 12;
 		}
-		
-		
 	}
+	   /**
+	    * Returns a string representation of the wind conditions. Summarize the
+	    * Beaufort number into 4 categories; calm; breezy; wind flags out; storm 
+	    * @return a string representation of the wind conditions
+	    */
+	   public String getWindConditions() {
+		   //String wind = getId() + ": ";
+		   int beaufort = getBeaufortNumber();
+		   if (beaufort >=10 ) {
+			   return "Storm is coming";
+		   }else if (beaufort >= 6 ) {
+			   return "Wind flags are out";
+		   }else if (beaufort >= 2) {
+			   return "Nice breeze today";
+		   }else {
+			   return "Wind is calm";
+		   }
+
+	   }
 }
