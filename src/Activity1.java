@@ -2,14 +2,9 @@ import core.data.*;
 
 public class Activity1 {
    public static void main(String[] args) {
-      String id = "KSEA";
-      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
-      ds.setCacheTimeout(15 * 60);  
-      ds.load();
-      ds.printUsageString();
-      double temp = ds.fetchFloat("temp_f");
-      String loc = ds.fetchString("location");
-      System.out.println("The temperature at " + loc + " is " + temp + "F");
+	  String stationID = "KSEA"; // Sea-Tac Airport
+	  System.out.println(getConciseForecast(stationID));
+      System.out.println("The temperature at KSEA is " + getTempF(stationID) + "F");
    }
    
    /**
@@ -34,7 +29,7 @@ public class Activity1 {
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
 	      ds.setCacheTimeout(15 * 60);  
 	      ds.load();
-	      ds.printUsageString();
+	      //ds.printUsageString();
 	      double temp = ds.fetchDouble("temp_f");
 	      String loc = ds.fetchString("location");
 	      return "The temperature at " + loc + " is " + temp + "F";

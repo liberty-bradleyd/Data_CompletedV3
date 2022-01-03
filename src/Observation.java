@@ -99,7 +99,7 @@ public class Observation implements Comparable{
 	}
 
 	/**
-	 * 
+	 * Gets the weather station ID
 	 * @return the weather station id
 	 */
 	public String getId() {
@@ -113,7 +113,7 @@ public class Observation implements Comparable{
 		if (shortDescription)
 			return (id + ": " + temp + " degrees; " + description + " (wind: " + windDir + " degrees)");
 		else
-			return (id + ": " + temp + " degrees; " + description + " (wind: " + windSpeed + " knots @ " + windDir + " degrees); relativity humidity: " + humidity);
+			return (id + ": " + temp + " degrees; " + description + " (wind: " + windSpeed + " knots @ " + windDir + " degrees); barometric pressure: " + pressure + "; relativity humidity: " + humidity);
 	}
 
 	/**

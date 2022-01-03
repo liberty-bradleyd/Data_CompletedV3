@@ -24,7 +24,7 @@ public class WeatherBureau {
 	
 	/**
 	 * Gets all the weather stations as an array
-	 * @return he weather stations as an arrayt
+	 * @return he weather stations as an array
 	 */
 
 	public WeatherStation[] getAllStationsArray() {
@@ -173,10 +173,17 @@ public class WeatherBureau {
 	   }
 
 	   System.out.println();
-	   System.out.println("Getting coldest station in Washington");
-	   Observation ob = bureau.getColdestInState("WA");
+	   System.out.println("Getting weather stations in Rhode Island");
+	   ArrayList<WeatherStation> riStations = bureau.getStationsInState("RI");
+	   for (WeatherStation ws : riStations) {
+		   System.out.println("  " + ws.getId() + ": " + ws.getName());
+	   }
+	   System.out.println("Total number of stations: " + riStations.size());
+
+	   System.out.println("Getting coldest station in Rhode Island");
+	   Observation ob = bureau.getColdestInState("RI");
 	   System.out.println("Coldest station is - " + ob);
-	   System.out.println(ob);
+	   //System.out.println(ob);
 	   
 
 
