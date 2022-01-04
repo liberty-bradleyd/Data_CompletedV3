@@ -1,8 +1,21 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 class Activity2Test {
+	static WeatherBot botSEA;
+	static Observation obSEAShort;
+	static WeatherBot botBOS;
+	static Observation obBOSLong;
+
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
+		botSEA = new WeatherBot("KSEA");
+		obSEAShort = botSEA.getShortObservation();
+		botBOS = new WeatherBot("KBOS");
+		obBOSLong = botBOS.getLongObservation();
+	}
 
 	@Test
 	void testConstructor1of4() {
@@ -131,51 +144,37 @@ class Activity2Test {
 	}
 	@Test
 	void testgetShortObservation1of4() {
-		WeatherBot bot = new WeatherBot("KSEA");
-		Observation ob = bot.getShortObservation();
-		assertEquals(0,ob.getBeaufortNumber());
+		assertEquals(0,obSEAShort.getBeaufortNumber());
 	}
 	@Test
 	void testgetShortObservation2of4() {
-		WeatherBot bot = new WeatherBot("KSEA");
-		Observation ob = bot.getShortObservation();
-		assertNotEquals(Integer.MIN_VALUE,ob.getTemp());
+		assertNotEquals(Integer.MIN_VALUE,obSEAShort.getTemp());
 	}
 	@Test
 	void testgetShortObservation3of4() {
-		WeatherBot bot = new WeatherBot("KSEA");
-		Observation ob = bot.getShortObservation();
-		assertEquals("KSEA",ob.getId());
+		assertEquals("KSEA",obSEAShort.getId());
 	}
 	@Test
 	void testgetShortObservation4of4() {
-		WeatherBot bot = new WeatherBot("KSEA");
-		Observation ob = bot.getShortObservation();
 		Observation obIntFalls = new Observation("KINL","Overcast with Haze",-24.0, 330);
-		assertTrue(obIntFalls.colderThan(ob));
+		assertTrue(obIntFalls.colderThan(obSEAShort));
 	}
 	@Test
 	void testgetLongObservation1of3() {
 		// Boston is the windiest big city in the US.
-		WeatherBot bot = new WeatherBot("KBOS");
-		Observation ob = bot.getLongObservation();
-		assertNotEquals(0,ob.getBeaufortNumber());
+		assertNotEquals(0,obBOSLong.getBeaufortNumber());
 	}
 	@Test
 	void testgetLongObservation2of3() {
 		// Boston is the windiest big city in the US.
-		WeatherBot bot = new WeatherBot("KBOS");
-		Observation ob = bot.getLongObservation();
-		assertEquals("KBOS",ob.getId());
+		assertEquals("KBOS",obBOSLong.getId());
 	}
 	@Test
 	void testgetLongObservation3of3() {
 		// Boston is the windiest big city in the US.
 		// International Falls, MN is typically the coldest in the US in winter
-		WeatherBot bot = new WeatherBot("KBOS");
-		Observation ob = bot.getLongObservation();
 		Observation obIntFalls = new Observation("KINL","Overcast with Haze",-24.0, 330);
-		assertTrue(obIntFalls.colderThan(ob));
+		assertTrue(obIntFalls.colderThan(obBOSLong));
 
 	}
 }
