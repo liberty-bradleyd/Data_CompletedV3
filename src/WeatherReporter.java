@@ -56,6 +56,14 @@ public class WeatherReporter {
 	 * @wbp.nonvisual location=256,28
 	 */
 	private final JButton button = new JButton("New button");
+	private JLabel lblWindConditionsText;
+	private JLabel lblWindText;
+	private JLabel lblBarometricPressure;
+	private JLabel lblWindData;
+	private JLabel lblWindConditionsData;
+	private JLabel lblPressureData;
+	private JLabel lblHumidity;
+	private JLabel lblHumidityData;
 
 	/**
 	 * Launch the application.
@@ -153,12 +161,12 @@ public class WeatherReporter {
 			lblWeatherText.setVerticalAlignment(SwingConstants.TOP);
 			lblWeatherText.setHorizontalAlignment(SwingConstants.LEFT);
 			
-			lblWeatherData = new JLabel("");
+			lblWeatherData = new JLabel("                      ");
 			lblWeatherData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			lblWeatherData.setVerticalAlignment(SwingConstants.TOP);
 			lblWeatherData.setHorizontalAlignment(SwingConstants.LEFT);
 			
-			lblTempData = new JLabel("");
+			lblTempData = new JLabel("               ");
 			lblTempData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			lblTempData.setVerticalAlignment(SwingConstants.TOP);
 			lblTempData.setHorizontalAlignment(SwingConstants.LEFT);
@@ -173,35 +181,83 @@ public class WeatherReporter {
 			lblStationName.setFont(new Font("Tahoma", Font.PLAIN, 28));
 			
 			lblIcon = new JLabel("");
+			lblIcon.setVerticalAlignment(SwingConstants.TOP);
 			lblIcon.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			lblWindConditionsText = new JLabel("Wind Conditions");
+			lblWindConditionsText.setVerticalAlignment(SwingConstants.TOP);
+			lblWindConditionsText.setHorizontalAlignment(SwingConstants.LEFT);
+			lblWindConditionsText.setFont(new Font("Tahoma", Font.BOLD, 21));
+			
+			lblWindText = new JLabel("Wind");
+			lblWindText.setVerticalAlignment(SwingConstants.TOP);
+			lblWindText.setHorizontalAlignment(SwingConstants.LEFT);
+			lblWindText.setFont(new Font("Tahoma", Font.BOLD, 21));
+			
+			lblBarometricPressure = new JLabel("Barometric Pressure");
+			lblBarometricPressure.setVerticalAlignment(SwingConstants.TOP);
+			lblBarometricPressure.setHorizontalAlignment(SwingConstants.LEFT);
+			lblBarometricPressure.setFont(new Font("Tahoma", Font.BOLD, 21));
+			
+			lblWindData = new JLabel("                     ");
+			lblWindData.setVerticalAlignment(SwingConstants.TOP);
+			lblWindData.setHorizontalAlignment(SwingConstants.LEFT);
+			lblWindData.setFont(new Font("Tahoma", Font.PLAIN, 21));
+			
+			lblWindConditionsData = new JLabel("        ");
+			lblWindConditionsData.setVerticalAlignment(SwingConstants.TOP);
+			lblWindConditionsData.setHorizontalAlignment(SwingConstants.LEFT);
+			lblWindConditionsData.setFont(new Font("Tahoma", Font.PLAIN, 21));
+			
+			lblPressureData = new JLabel("                  ");
+			lblPressureData.setHorizontalAlignment(SwingConstants.LEFT);
+			lblPressureData.setVerticalAlignment(SwingConstants.TOP);
+			lblPressureData.setFont(new Font("Tahoma", Font.PLAIN, 21));
+			
+			lblHumidity = new JLabel("Humidity");
+			lblHumidity.setVerticalAlignment(SwingConstants.TOP);
+			lblHumidity.setHorizontalAlignment(SwingConstants.LEFT);
+			lblHumidity.setFont(new Font("Tahoma", Font.BOLD, 21));
+			
+			lblHumidityData = new JLabel("                    ");
+			lblHumidityData.setHorizontalAlignment(SwingConstants.LEFT);
+			lblHumidityData.setVerticalAlignment(SwingConstants.TOP);
+			lblHumidityData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(90)
-								.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 561, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblStationName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGroup(gl_panel.createSequentialGroup()
 								.addContainerGap()
-								.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_panel.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(lblWeatherText, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblTempData, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE)))
-							.addComponent(lblStationName, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 864, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addComponent(lblWindText)
+									.addComponent(lblBarometricPressure)
+									.addComponent(lblHumidity)
+									.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(lblWeatherText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblWindConditionsText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addGap(2)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblHumidityData)
+									.addComponent(lblWindConditionsData, GroupLayout.PREFERRED_SIZE, 367, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblWindData, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblPressureData, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblTempData, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
+									.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
+								.addGap(184)))
+						.addContainerGap(10, Short.MAX_VALUE))
+					.addComponent(lblIcon, GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
 			);
 			gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
 						.addComponent(lblStationName, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-						.addGap(56)
-						.addComponent(lblIcon)
 						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+						.addGap(3)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblWeatherText, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
 							.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
@@ -209,7 +265,23 @@ public class WeatherReporter {
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblTempData))
-						.addGap(353))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblWindConditionsText)
+							.addComponent(lblWindConditionsData))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblWindText)
+							.addComponent(lblWindData))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblBarometricPressure)
+							.addComponent(lblPressureData))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblHumidity)
+							.addComponent(lblHumidityData))
+						.addGap(197))
 			);
 			panel.setLayout(gl_panel);
 
@@ -217,6 +289,9 @@ public class WeatherReporter {
 			ArrayList<String> states = bureau.getStatesWithStations();
 			for (String state: states) {
 				statesCombo.addItem(state);
+				if (state.toUpperCase().equals("WA")){
+					statesCombo.setSelectedItem(state);	
+				}
 			}
 
 		 //Add listener for the list of stations
@@ -262,13 +337,21 @@ public class WeatherReporter {
 			lblIcon.setIcon(new ImageIcon(image));
 			lblWeatherData.setText(ob.getDescription());
 			lblTempData.setText(ob.getTemp() + "°F");
+			lblPressureData.setText(ob.getPressure() + " mb");
+			lblHumidityData.setText(ob.getHumidity() + " %");
+			lblWindConditionsData.setText(ob.getWindConditions() + " (" + ob.getBeaufortNumber() + ")");
+			lblWindData.setText(ob.getWindDir() + "° at " + ob.getWindSpeed() + " knots");
 		}
 		catch(Exception e) {
 			String na = "Not Available";
 			lblWeatherData.setText(na);
 			lblTempData.setText(na);
 			lblIcon.setIcon(null);
-			
+			lblPressureData.setText(na);
+			lblHumidityData.setText(na);
+			lblWindConditionsData.setText(na);
+			lblWindData.setText(na);
+		
 		}
 		
 		
