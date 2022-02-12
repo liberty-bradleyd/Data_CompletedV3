@@ -32,8 +32,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
+import javax.swing.JButton;
 
-public class WeatherForecaster2 {
+public class WeatherReporter {
 	private WeatherBureau bureau;
 	protected JFrame WeatherObserver;
 	/**
@@ -51,6 +52,10 @@ public class WeatherForecaster2 {
 	private JLabel lblIcon;
 	private JLabel lblNewLabel;
 	private JPanel panel_1;
+	/**
+	 * @wbp.nonvisual location=256,28
+	 */
+	private final JButton button = new JButton("New button");
 
 	/**
 	 * Launch the application.
@@ -59,7 +64,7 @@ public class WeatherForecaster2 {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WeatherForecaster2 window = new WeatherForecaster2();
+					WeatherReporter window = new WeatherReporter();
 					window.WeatherObserver.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,7 +76,7 @@ public class WeatherForecaster2 {
 	/**
 	 * Create the application.
 	 */
-	public WeatherForecaster2() {
+	public WeatherReporter() {
 		initialize();
 	}
 
@@ -82,6 +87,7 @@ public class WeatherForecaster2 {
 		// Initialize our WeatherBureau object
 		bureau = new WeatherBureau();
 		WeatherObserver = new JFrame();
+		WeatherObserver.setTitle("Data Lab - National Weather Service");
 		WeatherObserver.setBounds(100, 100, 1167, 647);
 		WeatherObserver.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -219,7 +225,6 @@ public class WeatherForecaster2 {
 				try {
 				// Get the station ID
 				String selectedValue  = (String)stationList.getSelectedValue();
-				System.out.println(selectedValue);
 				// Get the index of the "--"
 				int endOfStationPos = selectedValue.indexOf("--");
 				String station = selectedValue.substring(0,endOfStationPos);
