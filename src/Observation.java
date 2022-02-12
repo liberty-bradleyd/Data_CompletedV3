@@ -8,6 +8,8 @@ public class Observation implements Comparable{
 	private int humidity; 
 	private double windSpeed;
 	private boolean shortDescription;
+	//added
+	private String iconURL;
 	
 	/**
 	 * Constructs an Observation object with the specified parameters and sets
@@ -46,6 +48,29 @@ public class Observation implements Comparable{
 
 	}
 
+	/**
+	 * Constructs an Observation object with the specified parameters.
+	 * toString will output a full observation, if this constructor is used.
+	 * @param the weather station id
+	 * @param description Short description of the current weather
+	 * @param temp temperature
+	 * @param windDir wind direction in degrees
+	 * @param windSpeed wind speed in knots
+	 * @param pressure barometric pressure in mb
+	 * @param humidity relative humidity
+	 */
+	public Observation(String id, String description, double temp, int windDir, double windSpeed, double pressure, int humidity, String iconURLBase, String  iconURLName) {
+		this.id = id;
+		this.description = description;
+		this.temp = temp;
+		this.windDir = windDir;
+		this.windSpeed = windSpeed;
+		this.pressure = pressure;
+		this.humidity = humidity;
+		shortDescription = false;
+		this.iconURL = iconURLBase+iconURLName;
+
+	}
 	/**
 	 * determine if the temperature of this observation is colder than other.
 	 * @param other the other other observation
@@ -104,6 +129,10 @@ public class Observation implements Comparable{
 	 */
 	public String getId() {
 		return id;
+	}
+	
+	public String getIconURL() {
+		return iconURL;
 	}
 
 	/**

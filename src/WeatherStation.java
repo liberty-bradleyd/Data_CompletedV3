@@ -50,6 +50,13 @@ public class WeatherStation {
 	   return lat;
    }
    
+   /**
+    * Gets state in which this station is located
+    * @returns the state in which this station is located
+    */
+   public String getState() {
+	   return state;
+   }
     /**
     * Determines if this weather station is located in the given state
     * @param st the state
@@ -60,11 +67,13 @@ public class WeatherStation {
    }
    
    public Observation getCurrentWeather() {
+	   System.out.println("Station ID: " + id);
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
 	      ds.setCacheTimeout(15 * 60);  
 	      ds.load();
 	      
-	      Observation ob = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity");
+	      Observation ob = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity","icon_url_base","icon_url_name");
+	   
 	      return ob;
 
    }

@@ -46,7 +46,7 @@ public class WeatherBot {
   
    }
    public static void main(String[] args) {
-
+	   
 	   WeatherBot bot = new WeatherBot("KSEA");
 	   Observation ob1 = bot.getShortObservation();
 	   Observation ob2 = bot.getLongObservation();

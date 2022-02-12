@@ -59,6 +59,19 @@ public class WeatherBureau {
 		
 		return list;
 	}
+	
+	
+	public ArrayList<String> getStatesWithStations(){
+		ArrayList<String> states = new ArrayList<String>();
+		for (WeatherStation station : stations) {
+			if (!states.contains(station.getState())) {
+				states.add(station.getState());
+			}
+		}
+		states.sort(null);
+		return states;
+	}
+	
 	private int getStationsInStateCount(String state) {
 		int count = 0;
 		for (WeatherStation station : stations) {
@@ -100,6 +113,15 @@ public class WeatherBureau {
 		}
 
 		return ob;
+	}
+	
+	public WeatherStation getStation(String stationLookingFor) {
+		for (WeatherStation station : stations) {
+			if (station.getId().equals(stationLookingFor)) {
+				return station;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -155,9 +177,9 @@ public class WeatherBureau {
 //		   System.out.println("  " + ws.getId() + ": " + ws.getName());
 //	   }
 //	   System.out.println("Total number of stations: " + stations.length);
-//	   
+//  
 //	   System.out.println();
-	   
+	   System.out.println(bureau.getStatesWithStations());
 	   System.out.println("Getting weather stations in Washington");
 	   ArrayList<WeatherStation> waStations = bureau.getStationsInState("WA");
 	   for (WeatherStation ws : waStations) {
