@@ -33,6 +33,7 @@ import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
 import javax.swing.JButton;
+import java.awt.SystemColor;
 
 public class WeatherReporter {
 	private WeatherBureau bureau;
@@ -149,6 +150,7 @@ public class WeatherReporter {
 			WeatherObserver.getContentPane().add(scrollPane, BorderLayout.WEST);
 			
 			panel = new JPanel();
+			panel.setBackground(SystemColor.textHighlight);
 			WeatherObserver.getContentPane().add(panel, BorderLayout.CENTER);
 			
 			lblTempText = new JLabel("Temperature");
@@ -162,11 +164,15 @@ public class WeatherReporter {
 			lblWeatherText.setHorizontalAlignment(SwingConstants.LEFT);
 			
 			lblWeatherData = new JLabel("                      ");
+			lblWeatherText.setLabelFor(lblWeatherData);
+			lblWeatherData.setForeground(SystemColor.text);
 			lblWeatherData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			lblWeatherData.setVerticalAlignment(SwingConstants.TOP);
 			lblWeatherData.setHorizontalAlignment(SwingConstants.LEFT);
 			
 			lblTempData = new JLabel("               ");
+			lblTempText.setLabelFor(lblTempData);
+			lblTempData.setForeground(SystemColor.text);
 			lblTempData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			lblTempData.setVerticalAlignment(SwingConstants.TOP);
 			lblTempData.setHorizontalAlignment(SwingConstants.LEFT);
@@ -177,6 +183,7 @@ public class WeatherReporter {
 			});
 			
 			lblStationName = new JLabel("");
+			lblStationName.setForeground(SystemColor.info);
 			lblStationName.setHorizontalAlignment(SwingConstants.CENTER);
 			lblStationName.setFont(new Font("Tahoma", Font.PLAIN, 28));
 			
@@ -195,21 +202,27 @@ public class WeatherReporter {
 			lblWindText.setFont(new Font("Tahoma", Font.BOLD, 21));
 			
 			lblBarometricPressure = new JLabel("Barometric Pressure");
+			lblBarometricPressure.setLabelFor(lblBarometricPressure);
 			lblBarometricPressure.setVerticalAlignment(SwingConstants.TOP);
 			lblBarometricPressure.setHorizontalAlignment(SwingConstants.LEFT);
 			lblBarometricPressure.setFont(new Font("Tahoma", Font.BOLD, 21));
 			
 			lblWindData = new JLabel("                     ");
+			lblWindText.setLabelFor(lblWindData);
+			lblWindData.setForeground(SystemColor.text);
 			lblWindData.setVerticalAlignment(SwingConstants.TOP);
 			lblWindData.setHorizontalAlignment(SwingConstants.LEFT);
 			lblWindData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			
 			lblWindConditionsData = new JLabel("        ");
+			lblWindConditionsText.setLabelFor(lblWindConditionsData);
+			lblWindConditionsData.setForeground(SystemColor.text);
 			lblWindConditionsData.setVerticalAlignment(SwingConstants.TOP);
 			lblWindConditionsData.setHorizontalAlignment(SwingConstants.LEFT);
 			lblWindConditionsData.setFont(new Font("Tahoma", Font.PLAIN, 21));
 			
 			lblPressureData = new JLabel("                  ");
+			lblPressureData.setForeground(SystemColor.text);
 			lblPressureData.setHorizontalAlignment(SwingConstants.LEFT);
 			lblPressureData.setVerticalAlignment(SwingConstants.TOP);
 			lblPressureData.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -220,6 +233,8 @@ public class WeatherReporter {
 			lblHumidity.setFont(new Font("Tahoma", Font.BOLD, 21));
 			
 			lblHumidityData = new JLabel("                    ");
+			lblHumidity.setLabelFor(lblHumidityData);
+			lblHumidityData.setForeground(SystemColor.text);
 			lblHumidityData.setHorizontalAlignment(SwingConstants.LEFT);
 			lblHumidityData.setVerticalAlignment(SwingConstants.TOP);
 			lblHumidityData.setFont(new Font("Tahoma", Font.PLAIN, 21));
@@ -227,9 +242,9 @@ public class WeatherReporter {
 			gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(lblStationName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(lblStationName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
 								.addContainerGap()
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 									.addComponent(lblWindText)
@@ -247,9 +262,11 @@ public class WeatherReporter {
 									.addComponent(lblPressureData, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)
 									.addComponent(lblTempData, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
 									.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
-								.addGap(184)))
+								.addGap(184))
+							.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+								.addGap(208)
+								.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)))
 						.addContainerGap(10, Short.MAX_VALUE))
-					.addComponent(lblIcon, GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
 			);
 			gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
