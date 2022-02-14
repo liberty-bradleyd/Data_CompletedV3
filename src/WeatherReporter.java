@@ -97,7 +97,7 @@ public class WeatherReporter {
 		bureau = new WeatherBureau();
 		WeatherObserver = new JFrame();
 		WeatherObserver.setTitle("Data Lab - National Weather Service");
-		WeatherObserver.setBounds(100, 100, 1167, 647);
+		WeatherObserver.setBounds(100, 100, 1280, 531);
 		WeatherObserver.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		panel_1 = new JPanel();
