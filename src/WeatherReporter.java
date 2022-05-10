@@ -35,6 +35,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 
+
 public class WeatherReporter {
 	private WeatherBureau bureau;
 	protected JFrame WeatherObserver;
