@@ -19,24 +19,11 @@ public class WeatherBot {
    }
    
    /**
-    * Gets an Observation object with the station id, short weather description, temperature
-    * and wind direction.
-    * @return an Observation object
-    */
-   public Observation getShortObservation() {
-	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
-	      ds.setCacheTimeout(15 * 60);  
-	      ds.load();
-	      Observation ob = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees");
-
-	      return ob;
-   }
-   /**
     * Gets an Observation object with the station id, short weather description, temperature,
     * wind direction, wind speed in knots, barometric pressure in mb, and the relative humidity.
     * @return an Observation object
     */
-   public Observation getLongObservation() {
+   public Observation getObservation() {
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
 	      ds.setCacheTimeout(15 * 60);  
 	      ds.load();
@@ -48,13 +35,14 @@ public class WeatherBot {
    public static void main(String[] args) {
 	   
 	   WeatherBot bot = new WeatherBot("KSEA");
-	   Observation ob1 = bot.getShortObservation();
-	   Observation ob2 = bot.getLongObservation();
+	   WeatherBot bot2 = new WeatherBot("KRNT");
+	   Observation ob1 = bot.getObservation();
+	   Observation ob2 = bot2.getObservation();
 	   System.out.println(ob1.toString());
 	   System.out.println(ob2.toString());
 	   
-	   WeatherBot bot2 = new WeatherBot("KRNT");
-	   Observation ob3 = bot2.getLongObservation();
+	   WeatherBot bot3 = new WeatherBot("KSMP");
+	   Observation ob3 = bot2.getObservation();
 	   System.out.println(ob3.toString());
 	   
 	   if (ob2.colderThan(ob3)) {

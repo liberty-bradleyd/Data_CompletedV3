@@ -52,7 +52,8 @@ public class WeatherBureau {
 	public ArrayList<WeatherStation> getStationsInState(String state){
 		ArrayList<WeatherStation> list = new ArrayList<WeatherStation>();
 		for (WeatherStation station : stations) {
-			if (station.isLocatedInState(state)) {
+//			if (station.isLocatedInState(state)) {
+			if (station.getState().equals(state)) {
 					list.add(station);
 			}
 		}
@@ -60,7 +61,11 @@ public class WeatherBureau {
 		return list;
 	}
 	
-	
+	/**
+	 * Returns an ArrayList of all states and provinces that
+	 * have a National Weather Service weather station
+	 * @return the states and provinces with NWS weather stations
+	 */
 	public ArrayList<String> getStatesWithStations(){
 		ArrayList<String> states = new ArrayList<String>();
 		for (WeatherStation station : stations) {
@@ -71,11 +76,17 @@ public class WeatherBureau {
 		states.sort(null);
 		return states;
 	}
-	
-	private int getStationsInStateCount(String state) {
+	/**
+	 * Returns the number of NWS weather stations in a state or province
+	 * @param state the state
+	 * @return the number of NWS weather stations in a state or province
+	 */
+	protected int getStationsInStateCount(String state) {
 		int count = 0;
 		for (WeatherStation station : stations) {
-			if (station.isLocatedInState(state)) {
+//			if (station.isLocatedInState(state)) {
+			if (station.getState().equals(state)) {
+
 					count++;
 			}
 		}
@@ -114,7 +125,11 @@ public class WeatherBureau {
 
 		return ob;
 	}
-	
+	/**
+	 * Returns a Weather Station object given it's station ID
+	 * @param stationLookingFor the station ID
+	 * @return a Weather Station object given it's station ID; otherwise null
+	 */
 	public WeatherStation getStation(String stationLookingFor) {
 		for (WeatherStation station : stations) {
 			if (station.getId().equals(stationLookingFor)) {
@@ -135,7 +150,9 @@ public class WeatherBureau {
 		WeatherStation[] sortedStations = new WeatherStation[filteredSize];
 		int count = 0;
 		for (WeatherStation station : stations) {
-			if (station.isLocatedInState(state)) {
+//			if (station.isLocatedInState(state)) {
+			if (station.getState().equals(state)) {
+
 				sortedStations[count] = station;
 				count++;
 			}
