@@ -52,7 +52,6 @@ public class WeatherBureau {
 	public ArrayList<WeatherStation> getStationsInState(String state){
 		ArrayList<WeatherStation> list = new ArrayList<WeatherStation>();
 		for (WeatherStation station : stations) {
-//			if (station.isLocatedInState(state)) {
 			if (station.getState().equals(state)) {
 					list.add(station);
 			}
@@ -101,17 +100,12 @@ public class WeatherBureau {
 	public Observation getColdestInState(String state) {
 		ArrayList<WeatherStation> list = getStationsInState(state);
 		WeatherStation ws = list.get(0);
-//		WeatherBot bot = new WeatherBot(ws.getId());
-//		Observation ob = bot.getShortObservation();
 		Observation ob = ws.getCurrentWeather();
 		double coldestTemp = ob.getTemp();
 		
 		for (int i = 1; i < list.size(); i++) {
 			WeatherStation ws2 = list.get(i);
-//			//WeatherBot bot2 = new WeatherBot(ws2.getId());
-			// use try..catch, because sometimes the stations are offline.
 			try {
-//				//Observation ob2 = bot2.getShortObservation();
 				Observation ob2 = ws2.getCurrentWeather(); //**add
 				if (ob2.getTemp() < coldestTemp) {
 					ob = ob2;
@@ -150,7 +144,6 @@ public class WeatherBureau {
 		WeatherStation[] sortedStations = new WeatherStation[filteredSize];
 		int count = 0;
 		for (WeatherStation station : stations) {
-//			if (station.isLocatedInState(state)) {
 			if (station.getState().equals(state)) {
 
 				sortedStations[count] = station;
@@ -169,20 +162,20 @@ public class WeatherBureau {
 		int sortedIndex;
 		WeatherStation newValue;
 
-		// Start at 1,because the 0th element is sorted with itself ​
+		// Start at 1,because the 0th element is sorted with itself
 
 		for (int index = 1; index < arr.length; index++) {
 
-			// Get a new value to insert into our "sorted" array​
+			// Get a new value to insert into our "sorted" array
 			newValue = arr[index];
 			sortedIndex = index;
-			// Shift values to right as long as they are greater​
-			// than new value​
+			// Shift values to right as long as they are greater
+			// than new value
 			while (sortedIndex > 0 && arr[sortedIndex - 1].getName().compareTo(newValue.getName()) > 0) {
 				arr[sortedIndex] = arr[sortedIndex - 1];
 				sortedIndex--;
 			}
-			// Place our new value in it's correct position​
+			// Place our new value in it's correct position
 			arr[sortedIndex] = newValue;
 		} 
 	}

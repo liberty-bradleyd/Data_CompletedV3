@@ -22,9 +22,10 @@ public class WeatherStation implements Comparable{
    WeatherStation(String name, String id, String state, double lat, double lng) {
       this.name = name;
       this.id = id;
+      this.state = state;  
       this.lat = lat;
       this.lng = lng;
-      this.state = state;   
+ 
    }
    
    /**
@@ -49,7 +50,13 @@ public class WeatherStation implements Comparable{
    public double getLatitude() {
 	   return lat;
    }
-   
+   /**
+    * Gets longitude for this station
+    * @returns the longitude for this station
+    */
+   public double getLongitude() {
+	   return lng;
+   }
    /**
     * Gets state in which this station is located
     * @returns the state in which this station is located

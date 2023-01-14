@@ -35,13 +35,19 @@ class Activity3Test {
 	@Test
 	void testWeatherStation3of4() {
 		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,71.28); 
-		assertEquals("KUUU",kUUU.getCurrentWeather().getId());
+		assertEquals(41.53,kUUU.getLatitude());
 	}
 
 	@Test
 	void testWeatherStation4of4() {
 		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,71.28); 
-		assertEquals("RI",kUUU.getState());
+		assertEquals(71.28,kUUU.getLongitude());
+	}
+	@Test
+	void testGetCurrentWeather() {
+		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,122.31361); 
+		assertEquals("KSEA",kSEA.getCurrentWeather().getId());
+
 	}
 
 	// non-zero size
@@ -181,10 +187,9 @@ class Activity3Test {
 		assertTrue(isWorking);
 	}
 	@Test
-	void getStatesWithStationsTest() {
+	void testGetStatesWithStations() {
 		assertEquals(92, accuBradley.getStatesWithStations().size());
 	}
-	
 	private WeatherStation[] makeCopy(WeatherStation[] stationsOrig) {
 		WeatherStation[] stationsCopy = new WeatherStation[stationsOrig.length];
 		for (int i = 0; i< stationsOrig.length;i++) {

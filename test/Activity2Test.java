@@ -132,21 +132,24 @@ class Activity2Test {
 
 	}
 	@Test
-	void testgetLongObservation1of3() {
+	void testgetObservation1of3() {
 		// Boston is the windiest big city in the US.
-		assertNotEquals(0,obBOSLong.getBeaufortNumber());
+		WeatherBot botBos2 = new WeatherBot("KBOS");
+		Observation ob = botBos2.getObservation();
+		assertNotEquals(0,ob.getBeaufortNumber());
 	}
 	@Test
-	void testgetLongObservation2of3() {
+	void testgetObservation2of3() {
 		// Boston is the windiest big city in the US.
-		assertEquals("KBOS",obBOSLong.getId());
+		WeatherBot botBos2 = new WeatherBot("KBOS");
+		Observation ob = botBos2.getObservation();
+		assertEquals("KBOS",ob.getId());
 	}
 	@Test
-	void testgetLongObservation3of3() {
+	void testgetObservation3of3() {
 		// Boston is the windiest big city in the US.
 		// International Falls, MN is typically the coldest in the US in winter
 		Observation obIntFalls = new Observation("KINL","Overcast with Haze",-24.0, 330,11.0,997.6,89);
 		assertTrue(obIntFalls.colderThan(obBOSLong));
 
-	}
-}
+	}}
