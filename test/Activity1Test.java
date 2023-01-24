@@ -18,7 +18,7 @@ class Activity1Test {
 		DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + station2 + ".xml"); 
 		ds.setCacheTimeout(15 * 60);  
 		ds.load();
-		double expected = ds.fetchFloat("temp_f");
+		double expected = ds.fetchDouble("temp_f");
 		double temp2 = Activity1.getTempF(station2);
 		assertEquals(expected, temp2);
 	}
