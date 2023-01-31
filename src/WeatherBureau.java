@@ -92,7 +92,7 @@ public class WeatherBureau {
 		WeatherStation ws = list.get(0);
 //		WeatherBot bot = new WeatherBot(ws.getId());
 //		Observation ob = bot.getShortObservation();
-		Observation ob = ws.getCurrentWeather();
+		Observation ob = ws.getCurrentObservation();
 		double coldestTemp = ob.getTemp();
 		
 		for (int i = 1; i < list.size(); i++) {
@@ -101,7 +101,7 @@ public class WeatherBureau {
 			// use try..catch, because sometimes the stations are offline.
 			try {
 //				//Observation ob2 = bot2.getShortObservation();
-				Observation ob2 = ws2.getCurrentWeather(); //**add
+				Observation ob2 = ws2.getCurrentObservation(); //**add
 				if (ob2.getTemp() < coldestTemp) {
 					ob = ob2;
 					coldestTemp = ob.getTemp();
@@ -114,7 +114,11 @@ public class WeatherBureau {
 
 		return ob;
 	}
-	
+	/**
+	 * Returns a WeatherStation object for the specified station
+	 * @param stationLookingFor the NWS code for a Weather Station
+	 * @return a WeatherStation object for the specified station, if it exists; otherwise null
+	 */
 	public WeatherStation getStation(String stationLookingFor) {
 		for (WeatherStation station : stations) {
 			if (station.getId().equals(stationLookingFor)) {

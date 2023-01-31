@@ -10,6 +10,7 @@ public class WeatherStation {
    private String state;
    private double lat;
    private double lng;
+   private Observation obs;
    
    /**
     * Constructor 
@@ -66,15 +67,15 @@ public class WeatherStation {
       return this.state.equals(st);
    }
    
-   public Observation getCurrentWeather() {
+   public Observation getCurrentObservation() {
 
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
 	      ds.setCacheTimeout(15 * 60);  
 	      ds.load();
 	      
-	      Observation ob = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity","icon_url_base","icon_url_name");
+	      obs = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity","icon_url_base","icon_url_name");
 	   
-	      return ob;
+	      return obs;
 
    }
    
