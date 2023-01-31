@@ -29,12 +29,21 @@ test {
 sourceSets {
     main {
         java {
+<<<<<<< HEAD
             srcDirs = ["src", "main/java", "test"]
 	}
     }
     test {
        java {
            srcDirs = ["src", "test/java", "test"]
+=======
+            srcDirs = ["src", "main/java","test"]
+	}
+    }
+    test {
+       java {
+           srcDirs = ["src", "test/java","test"]
+>>>>>>> branch 'main' of https://github.com/LibertyHS/Data_Completed.git
         }
     }
 }

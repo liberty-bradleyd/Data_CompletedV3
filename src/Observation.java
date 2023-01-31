@@ -7,7 +7,7 @@ public class Observation implements Comparable{
 	private double pressure; // in mb
 	private int humidity; 
 	private double windSpeed;
-	private boolean shortDescription;
+	//private boolean shortDescription;
 	//added
 	private String iconURL;
 	
@@ -20,10 +20,10 @@ public class Observation implements Comparable{
 	 * @param temp temperature
 	 * @param windDir wind direction in degrees
 	 */
-	public Observation(String id, String description, double temp, int windDir) {
-		this(id, description, temp, windDir,0,0,0);
-		shortDescription = true;
-	}
+//	public Observation(String id, String description, double temp, int windDir) {
+//		this(id, description, temp, windDir,0,0,0);
+//		shortDescription = true;
+//	}
 
 	/**
 	 * Constructs an Observation object with the specified parameters.
@@ -44,7 +44,7 @@ public class Observation implements Comparable{
 		this.windSpeed = windSpeed;
 		this.pressure = pressure;
 		this.humidity = humidity;
-		shortDescription = false;
+//		shortDescription = false;
 
 	}
 
@@ -58,6 +58,8 @@ public class Observation implements Comparable{
 	 * @param windSpeed wind speed in knots
 	 * @param pressure barometric pressure in mb
 	 * @param humidity relative humidity
+	 * @param iconURLBase the base URL, including the domain name for an icon depicting the weather
+	 * @param iconURLName the icon name depicting the weather
 	 */
 	public Observation(String id, String description, double temp, int windDir, double windSpeed, double pressure, int humidity, String iconURLBase, String  iconURLName) {
 		this.id = id;
@@ -67,7 +69,7 @@ public class Observation implements Comparable{
 		this.windSpeed = windSpeed;
 		this.pressure = pressure;
 		this.humidity = humidity;
-		shortDescription = false;
+//		shortDescription = false;
 		this.iconURL = iconURLBase+iconURLName;
 
 	}
@@ -89,7 +91,7 @@ public class Observation implements Comparable{
 	}
 
 	/**
-	 * @return the windDir
+	 * @return the wind Direction
 	 */
 	public int getWindDir() {
 		return windDir;
@@ -130,7 +132,11 @@ public class Observation implements Comparable{
 	public String getId() {
 		return id;
 	}
-	
+	/**
+	 * Gets the URL to the icon depicting the weather. 
+	 * This is a combination of the baseURL and the icon filename
+	 * @return A full URL to the icon depicting the weather. 
+	 */
 	public String getIconURL() {
 		return iconURL;
 	}
@@ -139,9 +145,9 @@ public class Observation implements Comparable{
 	 * @return a String representing this observation
 	 */
 	public String toString() {
-		if (shortDescription)
-			return (id + ": " + temp + " degrees; " + description + " (wind: " + windDir + " degrees)");
-		else
+//		if (shortDescription)
+//			return (id + ": " + temp + " degrees; " + description + " (wind: " + windDir + " degrees)");
+//		else
 			return (id + ": " + temp + " degrees; " + description + " (wind: " + windSpeed + " knots @ " + windDir + " degrees); barometric pressure: " + pressure + "; relativity humidity: " + humidity);
 	}
 
@@ -156,10 +162,10 @@ public class Observation implements Comparable{
 	public int compareTo(Object other) {
 		if (other instanceof Observation) {
 			Observation otherOb = (Observation) other;
-			if (this.temp == otherOb.temp) {
+			if (this.getTemp() == otherOb.getTemp()) {
 				return 0;
 			}
-			else if (this.temp > otherOb.temp) {
+			else if (this.getTemp() > otherOb.getTemp()) {
 				return 1;
 			}
 			else {

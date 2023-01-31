@@ -17,7 +17,7 @@ public class Activity1 {
 	      ds.setCacheTimeout(15 * 60);  
 	      ds.load();
 	      //ds.printUsageString();
-	      double temp = ds.fetchFloat("temp_f");
+	      double temp = ds.fetchDouble("temp_f");
 	      return temp;
    }
    /**

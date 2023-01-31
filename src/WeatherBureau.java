@@ -60,7 +60,7 @@ public class WeatherBureau {
 		return list;
 	}
 	
-	
+ 	
 	public ArrayList<String> getStatesWithStations(){
 		ArrayList<String> states = new ArrayList<String>();
 		for (WeatherStation station : stations) {

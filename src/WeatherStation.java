@@ -4,7 +4,7 @@ import core.data.DataSource;
  Represents information about a NWS weather station
 */
 
-public class WeatherStation {
+public class WeatherStation implements Comparable{
    private String name;
    private String id;
    private String state;
@@ -23,9 +23,10 @@ public class WeatherStation {
    WeatherStation(String name, String id, String state, double lat, double lng) {
       this.name = name;
       this.id = id;
+      this.state = state;  
       this.lat = lat;
       this.lng = lng;
-      this.state = state;   
+ 
    }
    
    /**
@@ -50,7 +51,13 @@ public class WeatherStation {
    public double getLatitude() {
 	   return lat;
    }
-   
+   /**
+    * Gets longitude for this station
+    * @returns the longitude for this station
+    */
+   public double getLongitude() {
+	   return lng;
+   }
    /**
     * Gets state in which this station is located
     * @returns the state in which this station is located
@@ -63,9 +70,9 @@ public class WeatherStation {
     * @param st the state
     * @return true if this weather station is located in st; otherwise false
     */
-   public boolean isLocatedInState(String st) {
-      return this.state.equals(st);
-   }
+//   public boolean isLocatedInState(String st) {
+//      return this.state.equals(st);
+//   }
    
    public Observation getCurrentObservation() {
 
@@ -78,5 +85,21 @@ public class WeatherStation {
 	      return obs;
 
    }
+	/**
+	 * Compares this object with the specified object for order.
+	 * @return a value > 0 if this observation has a name later in the alphabet than other;
+	 *           value < 0 if this observation has a name earlier in the alphabet than other;
+	 *           value = 0 if this observation's name is equal to other.
+	 * NOTE: Polymorphism is needed for this, so I didn't include this in the project spec.
+	 */
+	@Override
+	public int compareTo(Object other) {
+		if (other instanceof WeatherStation) {
+			WeatherStation otherOb = (WeatherStation) other;
+			return this.getName().compareTo(otherOb.getName());
+			}
+		return -1;
+	}
+
    
 }
