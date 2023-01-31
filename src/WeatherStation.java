@@ -70,9 +70,9 @@ public class WeatherStation implements Comparable{
     * @param st the state
     * @return true if this weather station is located in st; otherwise false
     */
-//   public boolean isLocatedInState(String st) {
-//      return this.state.equals(st);
-//   }
+   public boolean isLocatedInState(String st) {
+      return this.state.equals(st);
+   }
    
    public Observation getCurrentObservation() {
 
