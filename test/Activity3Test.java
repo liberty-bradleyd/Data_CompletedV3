@@ -191,4 +191,9 @@ class Activity3Test {
 		}
 		return stationsCopy;
 	}
+	@Test
+	void testGetStatesWithStations() {
+		assertEquals(92, accuBradley.getStatesWithStations().size());
+	}
+
 }
