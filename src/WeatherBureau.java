@@ -16,6 +16,9 @@ public class WeatherBureau {
 	 */
 	public WeatherBureau() {
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/index.xml").load();
+	      ds.setCacheTimeout(15*60);
+	      ds.load();
+	      
 	      stations = ds.fetchArray("WeatherStation", "station/station_name", 
 	             "station/station_id", "station/state",
 	             "station/latitude", "station/longitude");
@@ -69,6 +72,7 @@ public class WeatherBureau {
 			}
 		}
 		states.sort(null);
+		System.out.println(states.size());
 		return states;
 	}
 	
@@ -184,6 +188,7 @@ public class WeatherBureau {
 //  
 //	   System.out.println();
 	   System.out.println(bureau.getStatesWithStations());
+	   System.out.println("****");
 	   System.out.println("Getting weather stations in Washington");
 	   ArrayList<WeatherStation> waStations = bureau.getStationsInState("WA");
 	   for (WeatherStation ws : waStations) {
