@@ -11,6 +11,7 @@ class Activity2Test {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		 System.setProperty("java.awt.headless", "true");
 		botSEA = new WeatherBot("KSEA");
 		obSEAShort = botSEA.getShortObservation();
 		botBOS = new WeatherBot("KBOS");

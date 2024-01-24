@@ -14,6 +14,7 @@ class Activity3Test {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		 System.setProperty("java.awt.headless", "true");
 		accuBradley = new WeatherBureau();
 		stations = accuBradley.getAllStationsArray();
 		stationsAsList = accuBradley.getAllStationsList();
