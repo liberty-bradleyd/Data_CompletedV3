@@ -35,6 +35,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.SystemColor;
 
+
 public class WeatherReporter {
 	private WeatherBureau bureau;
 	protected JFrame WeatherObserver;
@@ -70,6 +71,7 @@ public class WeatherReporter {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -347,7 +349,7 @@ public class WeatherReporter {
 		
 		// Attempt to get the current observation for the weather station
 		try {
-			Observation ob = wb.getCurrentWeather();
+			Observation ob = wb.getCurrentObservation();
 			// update our UI with the current observation.
 			URL iconURL = new URL(ob.getIconURL());
 			BufferedImage image = ImageIO.read(iconURL.openStream());
@@ -389,7 +391,7 @@ public class WeatherReporter {
 			// 				"Station ID","Description", "Temp",  "Wind",
 			if (stations[row].getId().equals(station)) {
 				try {
-					Observation ob = stations[row].getCurrentWeather();
+					Observation ob = stations[row].getCurrentObservation();
 					data[row][0] = ob.getId();
 					data[row][1] = ob.getDescription();
 					data[row][2] = ob.getTemp();

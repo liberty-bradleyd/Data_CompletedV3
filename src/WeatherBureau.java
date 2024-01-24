@@ -16,6 +16,9 @@ public class WeatherBureau {
 	 */
 	public WeatherBureau() {
 	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/index.xml").load();
+	      ds.setCacheTimeout(15*60);
+	      ds.load();
+	      
 	      stations = ds.fetchArray("WeatherStation", "station/station_name", 
 	             "station/station_id", "station/state",
 	             "station/latitude", "station/longitude");
@@ -60,7 +63,7 @@ public class WeatherBureau {
 		return list;
 	}
 	
-	
+ 	
 	public ArrayList<String> getStatesWithStations(){
 		ArrayList<String> states = new ArrayList<String>();
 		for (WeatherStation station : stations) {
@@ -69,6 +72,7 @@ public class WeatherBureau {
 			}
 		}
 		states.sort(null);
+		System.out.println(states.size());
 		return states;
 	}
 	
@@ -92,7 +96,7 @@ public class WeatherBureau {
 		WeatherStation ws = list.get(0);
 //		WeatherBot bot = new WeatherBot(ws.getId());
 //		Observation ob = bot.getShortObservation();
-		Observation ob = ws.getCurrentWeather();
+		Observation ob = ws.getCurrentObservation();
 		double coldestTemp = ob.getTemp();
 		
 		for (int i = 1; i < list.size(); i++) {
@@ -101,7 +105,7 @@ public class WeatherBureau {
 			// use try..catch, because sometimes the stations are offline.
 			try {
 //				//Observation ob2 = bot2.getShortObservation();
-				Observation ob2 = ws2.getCurrentWeather(); //**add
+				Observation ob2 = ws2.getCurrentObservation(); //**add
 				if (ob2.getTemp() < coldestTemp) {
 					ob = ob2;
 					coldestTemp = ob.getTemp();
@@ -114,7 +118,11 @@ public class WeatherBureau {
 
 		return ob;
 	}
-	
+	/**
+	 * Returns a WeatherStation object for the specified station
+	 * @param stationLookingFor the NWS code for a Weather Station
+	 * @return a WeatherStation object for the specified station, if it exists; otherwise null
+	 */
 	public WeatherStation getStation(String stationLookingFor) {
 		for (WeatherStation station : stations) {
 			if (station.getId().equals(stationLookingFor)) {
@@ -180,6 +188,7 @@ public class WeatherBureau {
 //  
 //	   System.out.println();
 	   System.out.println(bureau.getStatesWithStations());
+	   System.out.println("****");
 	   System.out.println("Getting weather stations in Washington");
 	   ArrayList<WeatherStation> waStations = bureau.getStationsInState("WA");
 	   for (WeatherStation ws : waStations) {

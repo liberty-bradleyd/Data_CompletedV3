@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 }
+<<<<<<< HEAD
 /* add for this project to run in headless mode
 */
 compileJava {
@@ -40,6 +41,51 @@ sourceSets {
     test {
        java {
            srcDirs = ["src", "test/java"]
+=======
+
+repositories {
+	mavenCentral()
+}
+
+// Added implementation, because that was needed to compile the jUnit test case.
+dependencies {
+	testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
+	implementation('org.junit.jupiter:junit-jupiter:5.6.0')
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+/* Added the whole sourceSets section, so that the source and test files did NOT have to always follow this structure
+      main/java
+      test/java
+      
+      Eclipse puts them all in the src folder by default, so this sourceSets statement will handle where Eclipse puts 
+      them by default, as well as work with the folder structure expected by Gradle. 
+
+*/
+sourceSets {
+    main {
+        java {
+<<<<<<< HEAD
+            srcDirs = ["src", "main/java", "test"]
+	}
+    }
+    test {
+       java {
+           srcDirs = ["src", "test/java", "test"]
+=======
+            srcDirs = ["src", "main/java","test"]
+	}
+    }
+    test {
+       java {
+           srcDirs = ["src", "test/java","test"]
+>>>>>>> branch 'main' of https://github.com/LibertyHS/Data_Completed.git
+>>>>>>> branch 'main' of https://github.com/LibertyHS/Data_Completed.git
         }
     }
 }
