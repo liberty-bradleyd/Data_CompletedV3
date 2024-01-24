@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class Activity3Test {
+public class Activity3Test {
 	static WeatherBureau accuBradley;
 	static WeatherStation[] stations;
 	static ArrayList<WeatherStation> stationsAsList;

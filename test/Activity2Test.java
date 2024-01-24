@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 
-class Activity2Test {
+public class Activity2Test {
 	static Activity2 botSEA;
 	static Observation obSEA;
 	static Activity2 botBOS;
