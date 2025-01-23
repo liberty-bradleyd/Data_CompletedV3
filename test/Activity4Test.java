@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Test;
 public class Activity4Test {
 	static ForecastPeriod sammamish;
 	static ForecastPeriod purdue;
-//	static WeatherStation[] stations;
-//	static ArrayList<WeatherStation> stationsAsList;
-//	static ArrayList<WeatherStation> waStations;
-//	static ArrayList<WeatherStation> riStations;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
