@@ -138,6 +138,13 @@ public class Observation implements Comparable{
 	 * @return A full URL to the icon depicting the weather. 
 	 */
 	public String getIconURL() {
+		/*
+		 * Had to ensure that the protocol was https instead of http or the request would not go
+		 * through when we tried to retrieve the icon and display it.
+		 */
+		if (!iconURL.substring(0, 4).equals("https")) {
+			iconURL = iconURL.substring(0,4) + "s" + iconURL.substring(4);
+		}
 		return iconURL;
 	}
 

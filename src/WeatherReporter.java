@@ -12,7 +12,10 @@ import javax.swing.JTable;
 import javax.swing.ListModel;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
@@ -351,15 +354,19 @@ public class WeatherReporter {
 		try {
 			Observation ob = wb.getCurrentObservation();
 			// update our UI with the current observation.
+			
 			URL iconURL = new URL(ob.getIconURL());
-			BufferedImage image = ImageIO.read(iconURL.openStream());
+			//iconURL.
+			InputStream stream = iconURL.openStream();
+			BufferedImage image = ImageIO.read(iconURL);
 			lblIcon.setIcon(new ImageIcon(image));
+			
 			lblWeatherData.setText(ob.getDescription());
-			lblTempData.setText(ob.getTemp() + "°F");
+			lblTempData.setText(ob.getTemp() + "ï¿½F");
 			lblPressureData.setText(ob.getPressure() + " mb");
 			lblHumidityData.setText(ob.getHumidity() + " %");
 			lblWindConditionsData.setText(ob.getWindConditions() + " (" + ob.getBeaufortNumber() + ")");
-			lblWindData.setText(ob.getWindDir() + "° at " + ob.getWindSpeed() + " knots");
+			lblWindData.setText(ob.getWindDir() + "ï¿½ at " + ob.getWindSpeed() + " knots");
 		}
 		catch(Exception e) {
 			String na = "Not Available";

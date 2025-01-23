@@ -1,3 +1,9 @@
+import java.io.IOException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import core.data.DataSource;
 
 /*
@@ -83,6 +89,41 @@ public class WeatherStation implements Comparable{
 	      obs = ds.fetch("Observation", "station_id", "weather", "temp_f", "wind_degrees", "wind_kt", "pressure_mb", "relative_humidity","icon_url_base","icon_url_name");
 	   
 	      return obs;
+
+   }
+   
+   public ForecastPeriod[] getForecast() throws JSONException, IOException {
+	   JSONObject jsonGrid = JSONHelper.readJsonFromUrl("https://api.weather.gov/points/" + lat + "," + lng);
+	   // JSONObject json = JSONHelper.readJsonFromUrl("https://api.weather.gov/gridpoints/SEW/134,66/forecast");
+	   JSONObject json = JSONHelper.readJsonFromUrl(jsonGrid.getString("forecast"));
+	    //System.out.println(json.toString());
+	    JSONObject properties= json.getJSONObject("properties");
+	    JSONArray periods = properties.getJSONArray("periods");
+	    ForecastPeriod[] forecasts = new ForecastPeriod[periods.length()];
+	    for (int i = 0; i < periods.length(); i++) {
+	    	JSONObject current = periods.getJSONObject(i);
+	    	// precip chance can either be null or a number, which isn't easily 
+	    	// mappable to a java type.
+	    	int precipChancePercent =0;
+	    	try {
+	    		precipChancePercent = current.getJSONObject("probabilityOfPrecipitation").getInt("value");
+					
+	    	}catch(Exception e) {
+	    		//System.out.println("Precip chance is null");
+	    	}
+	    	forecasts[i] = new ForecastPeriod(current.getString("name"),
+	    									  current.getString("startTime"),
+	    									  current.getString("endTime"),
+	    									  current.getInt("temperature"), 
+	    									  current.getString("temperatureUnit"),
+	    									  precipChancePercent,
+	    									  current.getString("windSpeed"),
+	    									  current.getString("windDirection"),
+	    									  current.getString("icon"), 
+	    									  current.getString("shortForecast"), 
+	    									  current.getString("detailedForecast"));
+	    }
+	    return forecasts;
 
    }
 	/**
