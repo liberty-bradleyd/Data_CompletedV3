@@ -94,8 +94,9 @@ public class WeatherStation implements Comparable{
    
    public ForecastPeriod[] getForecast() throws JSONException, IOException {
 	   JSONObject jsonGrid = JSONHelper.readJsonFromUrl("https://api.weather.gov/points/" + lat + "," + lng);
+	   JSONObject propertiesGrid = jsonGrid.getJSONObject("properties");
 	   // JSONObject json = JSONHelper.readJsonFromUrl("https://api.weather.gov/gridpoints/SEW/134,66/forecast");
-	   JSONObject json = JSONHelper.readJsonFromUrl(jsonGrid.getString("forecast"));
+	   JSONObject json = JSONHelper.readJsonFromUrl(propertiesGrid.getString("forecast"));
 	    //System.out.println(json.toString());
 	    JSONObject properties= json.getJSONObject("properties");
 	    JSONArray periods = properties.getJSONArray("periods");
