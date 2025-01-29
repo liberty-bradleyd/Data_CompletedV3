@@ -165,8 +165,7 @@ public class WeatherBureau {
 			// get new value to insert into the correct place
 			newValue = arr[index];
 			sortedIndex = index;
-			// Shift values to right as long as they are greater​
-			// than new value​
+			// Shift values to the right as long as they are larger.
 			while (sortedIndex > 0 && arr[sortedIndex - 1].getName().compareTo(newValue.getName()) > 0) {
 				arr[sortedIndex] = arr[sortedIndex - 1];
 				sortedIndex--;
