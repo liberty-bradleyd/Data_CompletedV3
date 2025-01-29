@@ -162,8 +162,7 @@ public class WeatherBureau {
 		
 		// start at 1, because 0 is sorted with itself.
 		for (int index = 1; index < arr.length; index++) {
-
-			// Get a new value to insert into our "sorted" array​
+			// get new value to insert into the correct place
 			newValue = arr[index];
 			sortedIndex = index;
 			// Shift values to right as long as they are greater​
