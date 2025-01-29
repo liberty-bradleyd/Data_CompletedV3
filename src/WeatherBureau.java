@@ -170,7 +170,7 @@ public class WeatherBureau {
 				arr[sortedIndex] = arr[sortedIndex - 1];
 				sortedIndex--;
 			}
-			// Place our new value in it's correct position​
+			// Insert our value into its correct place.
 			arr[sortedIndex] = newValue;
 		} 
 	}
