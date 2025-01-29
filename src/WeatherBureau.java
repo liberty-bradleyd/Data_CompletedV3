@@ -159,9 +159,8 @@ public class WeatherBureau {
 	public void insertionSort(WeatherStation[] arr) {
 		int sortedIndex;
 		WeatherStation newValue;
-
-		// Start at 1,because the 0th element is sorted with itself ​
-
+		
+		// start at 1, because 0 is sorted with itself.
 		for (int index = 1; index < arr.length; index++) {
 
 			// Get a new value to insert into our "sorted" array​
