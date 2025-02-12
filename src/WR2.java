@@ -1,45 +1,37 @@
-import java.awt.EventQueue;
-import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
+
 import java.awt.BorderLayout;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListModel;
-
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.ListSelectionModel;
-import java.awt.GridLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
-import java.awt.Font;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.SystemColor;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-
-public class WeatherReporter {
+public class WR2 {
 	private WeatherBureau bureau;
 	protected JFrame WeatherObserver;
 	/**
@@ -69,16 +61,14 @@ public class WeatherReporter {
 	private JLabel lblPressureData;
 	private JLabel lblHumidity;
 	private JLabel lblHumidityData;
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WeatherReporter window = new WeatherReporter();
+					WR2 window = new WR2();
 					window.WeatherObserver.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,7 +80,7 @@ public class WeatherReporter {
 	/**
 	 * Create the application.
 	 */
-	public WeatherReporter() {
+	public WR2() {
 		initialize();
 	}
 
@@ -113,6 +103,7 @@ public class WeatherReporter {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		JComboBox statesCombo = new JComboBox();
+		statesCombo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -144,6 +135,7 @@ public class WeatherReporter {
 		// Initialize our List box witha  default list model
 		listModel = new DefaultListModel();
 		stationList = new JList(listModel);
+		stationList.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		stationList.setToolTipText("Select the weather station for which you want to see the most recent observation.");
 		stationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -247,18 +239,18 @@ public class WeatherReporter {
 			gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panel.createSequentialGroup()
-						.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblStationName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblStationName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(gl_panel.createSequentialGroup()
 								.addContainerGap()
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 									.addComponent(lblWindText)
 									.addComponent(lblBarometricPressure)
 									.addComponent(lblHumidity)
-									.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(lblWeatherText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(lblWindConditionsText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+										.addComponent(lblWindConditionsText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE))
 								.addGap(2)
 								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 									.addComponent(lblHumidityData)
@@ -268,10 +260,10 @@ public class WeatherReporter {
 									.addComponent(lblTempData, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
 									.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 336, GroupLayout.PREFERRED_SIZE))
 								.addGap(184))
-							.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createSequentialGroup()
 								.addGap(208)
 								.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(10, Short.MAX_VALUE))
+						.addContainerGap(18, Short.MAX_VALUE))
 			);
 			gl_panel.setVerticalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
@@ -281,11 +273,11 @@ public class WeatherReporter {
 						.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 						.addGap(3)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblWeatherText, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-							.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblWeatherText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblWeatherData, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblTempText, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblTempData))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
@@ -332,9 +324,7 @@ public class WeatherReporter {
 				}
 			}
 		});
-		
-	}
-	
+		}
 	private void updateStations(String state) {
 		WeatherStation[] stations = bureau.getStationsInStateSortedByName(state);
 		//stationList.removeAll();
@@ -421,6 +411,5 @@ public class WeatherReporter {
 		}
 		//observationsTable.setModel(new DefaultTableModel(data,columns));
 	}
+
 }
-
-

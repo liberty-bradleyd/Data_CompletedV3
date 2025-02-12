@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -125,13 +126,13 @@ public class Activity4Test {
 	void testWeatherStationGetForecast3of8() throws JSONException, IOException {
 		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
 		ForecastPeriod[] periods = kSEA.getForecast();
-		assertEquals(LocalDateTime.now().getDayOfMonth(),periods[0].getStart().getDayOfMonth());
+		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
 	}
 	@Test
 	void testWeatherStationGetForecast4of8() throws JSONException, IOException {
 		WeatherStation kSMP= new WeatherStation("Stampede Pass","KSMP","WA", 47.427,-121.418); 
 		ForecastPeriod[] periods = kSMP.getForecast();
-		assertEquals(LocalDateTime.now().getDayOfMonth(),periods[0].getStart().getDayOfMonth());
+		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
 	}
 	@Test
 	void testWeatherStationGetForecast5of8() throws JSONException, IOException {
