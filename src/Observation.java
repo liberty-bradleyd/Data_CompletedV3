@@ -10,6 +10,17 @@ public class Observation implements Comparable{
 	//private boolean shortDescription;
 	//added
 	private String iconURL;
+	// static fields that represent the XML notes for each
+	// part of the observation
+	public static final String ID = "current_observation/station_id";
+	public static final String TEMPF = "current_observation/temp_f";
+	public static final String WINDDIR = "current_observation/wind_degrees";
+	public static final String DESCRIPTION = "current_observation/weather";
+	public static final String PRESSURE_MB = "current_observation/pressure_mb";
+	public static final String HUMIDITY = "current_observation/relative_humidity";
+	public static final String WINDSPEED_KTS = "current_observation/wind_kt";
+	public static final String ICONURL_BASE = "current_observation/icon_url_base";
+	public static final String ICONURL_FILE = "current_observation/icon_url_name";
 	
 	/**
 	 * Constructs an Observation object with the specified parameters and sets
