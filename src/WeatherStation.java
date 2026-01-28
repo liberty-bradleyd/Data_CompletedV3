@@ -18,6 +18,14 @@ public class WeatherStation implements Comparable{
    private double lng;
    private Observation obs;
    
+   //**2026**
+
+   public static final String ID = "station_id";
+   public static final String STATE = "state";
+   public static final String STATION_NAME = "station_name";
+   public static final String LATITUDE = "latitude";
+   public static final String LONGITUDE = "longitude";
+
    /**
     * Constructor 
     * @param name The name of the station

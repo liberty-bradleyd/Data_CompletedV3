@@ -10,7 +10,7 @@ public class Observation implements Comparable{
 	//private boolean shortDescription;
 	//added
 	private String iconURL;
-	// static fields that represent the XML notes for each
+	// **2026**static fields that represent the XML notes for each
 	// part of the observation
 	public static final String ID = "current_observation/station_id";
 	public static final String TEMPF = "current_observation/temp_f";
