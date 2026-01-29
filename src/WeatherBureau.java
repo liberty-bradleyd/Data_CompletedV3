@@ -7,6 +7,16 @@ import core.data.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
 
 public class WeatherBureau {
 	WeatherStation[] stations;
@@ -29,7 +39,7 @@ public class WeatherBureau {
 
 	}
 	//**2026**
-	public WeatherBureau(String filename) {
+	public WeatherBureau(String dir, String filename) {
 		String name = "";
 		String id = "";
 		String state = "";
@@ -38,7 +48,7 @@ public class WeatherBureau {
 		stationsList = new ArrayList<WeatherStation>(3000);
 		// open file
 		try {
-			File csvFile = new File("data/"+ filename);
+			File csvFile = new File(dir + "/"+ filename);
 			Scanner fileReader = new Scanner(csvFile);
 
 			// Read row by row
@@ -55,7 +65,7 @@ public class WeatherBureau {
 				}
 				else {
 					station = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-					
+
 
 					// Create a WeatherStation and add to ArrayList
 					for (int i = 0; i < station.length; i++) {
@@ -71,7 +81,7 @@ public class WeatherBureau {
 					stationsList.add(new WeatherStation(name, id, state, lat, lng));
 				}
 			}
-			// population stations
+			// populate stations
 			stations = new WeatherStation[stationsList.size()];
 			for (int i = 0; i < stationsList.size(); i++) {
 				stations[i] = stationsList.get(i);
@@ -79,6 +89,79 @@ public class WeatherBureau {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	/**2026**/
+	public WeatherBureau(String urlString) {
+		stationsList = new ArrayList<>();
+		Document doc = null;
+		try {
+			// Create a URL and open connection
+			URL url = new URL(urlString);
+			URLConnection connection = url.openConnection();
+
+			// Get input stream from connection
+			InputStream xmlStream = connection.getInputStream();
+
+			// Setup XML parser
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+			// Parse XML
+			doc = dBuilder.parse(xmlStream);
+			doc.getDocumentElement().normalize();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		// init the variables, in case an element is not present
+		String name = "";
+		String id = "";
+		String state = "";
+		double lat = Double.MIN_VALUE;
+		double lng = Double.MIN_VALUE;
+
+		NodeList stationNodes = doc.getElementsByTagName("station");
+
+		for (int i = 0; i < stationNodes.getLength(); i++) {
+			Element stationEl = (Element) stationNodes.item(i);
+			// This code verifies that the element exists and if not the default value is used.
+			// get station id
+			NodeList tempIDList = stationEl.getElementsByTagName(WeatherStation.ID);
+			if (tempIDList.getLength() > 0) {
+				id = tempIDList.item(0).getTextContent();
+			}
+
+			// get state
+			NodeList tempStateList = stationEl.getElementsByTagName(WeatherStation.STATE);
+			if (tempStateList.getLength() > 0) {
+				state = tempStateList.item(0).getTextContent();
+			}
+
+			// get station_name
+			NodeList tempStationList = stationEl.getElementsByTagName(WeatherStation.STATION_NAME);
+			if (tempStationList.getLength() > 0) {
+				name = tempStationList.item(0).getTextContent();
+			}
+
+			// get latitude
+			NodeList tempLatList = stationEl.getElementsByTagName(WeatherStation.LATITUDE);
+			if (tempLatList.getLength() > 0) {
+				lat = Double.parseDouble(tempLatList.item(0).getTextContent());
+			}
+
+			// get longitude
+			NodeList tempLngList = stationEl.getElementsByTagName(WeatherStation.LONGITUDE);
+			if (tempLngList.getLength() > 0) {
+				lng = Double.parseDouble(tempLngList.item(0).getTextContent());
+			}
+
+			stationsList.add(new WeatherStation(name,id,state,lat,lng));
+		}
+		// populate stations
+		stations = new WeatherStation[stationsList.size()];
+		for (int i = 0; i < stationsList.size(); i++) {
+			stations[i] = stationsList.get(i);
 		}
 	}
 	/**
@@ -232,15 +315,16 @@ public class WeatherBureau {
 	}
 	public static void main(String[] args) {
 		//	WeatherBureau bureau = new WeatherBureau();
-		WeatherBureau bureau = new WeatherBureau("All_Stations.csv");
+		//WeatherBureau bureau = new WeatherBureau("data","All_Stations.csv");
+		WeatherBureau bureau = new WeatherBureau("https://weather.gov/xml/current_obs/index.xml");
 		// this would print out ~2800 weather stations
-		//	   WeatherStation[] stations = bureau.getAllStationsArray();
-		//	   for (WeatherStation ws : stations) {
-		//		   System.out.println("  " + ws.getId() + ": " + ws.getName());
-		//	   }
-		//	   System.out.println("Total number of stations: " + stations.length);
-		//  
-		//	   System.out.println();
+//			   WeatherStation[] stations = bureau.getAllStationsArray();
+//			   for (WeatherStation ws : stations) {
+//				   System.out.println("  " + ws.getId() + ": " + ws.getName());
+//			   }
+//			   System.out.println("Total number of stations: " + stations.length);
+//		  
+//			   System.out.println();
 		System.out.println(bureau.getStatesWithStations());
 		System.out.println("****");
 		System.out.println("Getting weather stations in Washington");

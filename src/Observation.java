@@ -1,4 +1,17 @@
 /* Activity 2 */
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 public class Observation implements Comparable{
 	private String id;
 	private double temp;    // in fahrenheit
@@ -12,15 +25,15 @@ public class Observation implements Comparable{
 	private String iconURL;
 	// **2026**static fields that represent the XML notes for each
 	// part of the observation
-	public static final String ID = "current_observation/station_id";
-	public static final String TEMPF = "current_observation/temp_f";
-	public static final String WINDDIR = "current_observation/wind_degrees";
-	public static final String DESCRIPTION = "current_observation/weather";
-	public static final String PRESSURE_MB = "current_observation/pressure_mb";
-	public static final String HUMIDITY = "current_observation/relative_humidity";
-	public static final String WINDSPEED_KTS = "current_observation/wind_kt";
-	public static final String ICONURL_BASE = "current_observation/icon_url_base";
-	public static final String ICONURL_FILE = "current_observation/icon_url_name";
+	public static final String ID = "station_id";
+	public static final String TEMPF = "temp_f";
+	public static final String WINDDIR = "wind_degrees";
+	public static final String DESCRIPTION = "weather";
+	public static final String PRESSURE_MB = "pressure_mb";
+	public static final String HUMIDITY = "relative_humidity";
+	public static final String WINDSPEED_KTS = "wind_kt";
+	public static final String ICONURL_BASE = "icon_url_base";
+	public static final String ICONURL_FILE = "icon_url_name";
 	
 	/**
 	 * Constructs an Observation object with the specified parameters and sets
@@ -246,4 +259,165 @@ public class Observation implements Comparable{
 		   }
 
 	   }
+		public static Observation getObservation(String stationID) {
+			Observation obs = null;
+			try {
+				// URL of the XML feed
+				String urlString = "https://forecast.weather.gov/xml/current_obs/" + stationID + ".xml";
+
+				// Create a URL and open connection
+				URL url = new URL(urlString);
+				URLConnection connection = url.openConnection();
+
+				// Optional: set Accept header (not always needed, but can help)
+				connection.addRequestProperty("Accept", "application/xml");
+
+				// Get input stream from connection
+				InputStream xmlStream = connection.getInputStream();
+
+				// Setup XML parser
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+				// Parse XML
+				Document doc = dBuilder.parse(xmlStream);
+				doc.getDocumentElement().normalize();
+
+				// Initialize the variables. It is possible that any given observation may be missing one or more
+				// observation details.
+				String id = ""; 
+				double temp = Double.MIN_VALUE;    // in fahrenheit
+				int windDir = Integer.MIN_VALUE;   // in degrees
+				String description = "";
+				double pressure = Double.MIN_VALUE; // in mb
+				int humidity = Integer.MIN_VALUE; 
+				double windSpeed = Double.MIN_VALUE;
+				String iconBase = "";
+				String iconFile = "";
+
+				// get station id
+				NodeList tempIDList = doc.getElementsByTagName(Observation.ID);
+				if (tempIDList.getLength() > 0) {
+					id = tempIDList.item(0).getTextContent();
+				}
+				// get temperature in Fahrenheit
+				NodeList tempFList = doc.getElementsByTagName(Observation.TEMPF);
+				if (tempFList.getLength() > 0) {
+					temp = Double.parseDouble(tempFList.item(0).getTextContent());
+				}
+				// get wind direction in degrees
+				NodeList tempWinDirList = doc.getElementsByTagName(Observation.WINDDIR);
+				if (tempWinDirList.getLength() > 0) {
+					windDir = Integer.parseInt(tempWinDirList.item(0).getTextContent());
+				}
+
+				// get general weather description
+				NodeList weatherList = doc.getElementsByTagName(Observation.DESCRIPTION);
+				if (weatherList.getLength() > 0) {
+					description = weatherList.item(0).getTextContent();
+				}
+				// get barometric presssure
+				NodeList pressureList = doc.getElementsByTagName(Observation.PRESSURE_MB);
+				if (pressureList.getLength() > 0) {
+					pressure = Double.parseDouble(pressureList.item(0).getTextContent());
+				}
+
+				// get humidity
+				NodeList humidityList = doc.getElementsByTagName(Observation.HUMIDITY);
+				if (humidityList.getLength() > 0) {
+					humidity = Integer.parseInt(humidityList.item(0).getTextContent());
+				}
+				// get wind speed in kts
+				NodeList tempWindSpeedList = doc.getElementsByTagName(Observation.WINDSPEED_KTS);
+				if (tempWindSpeedList.getLength() > 0) {
+					windSpeed = Integer.parseInt(tempWindSpeedList.item(0).getTextContent());
+				}
+				// get icon base URL
+				NodeList iconBaseList = doc.getElementsByTagName(Observation.ICONURL_BASE);
+				if (iconBaseList.getLength() > 0) {
+					iconBase = iconBaseList.item(0).getTextContent();
+				}
+				// get icon file
+				NodeList iconFileList = doc.getElementsByTagName(Observation.ICONURL_FILE);
+				if (iconFileList.getLength() > 0) {
+					iconFile = iconFileList.item(0).getTextContent();
+				}
+
+				xmlStream.close();
+				return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+
+
+			return obs;
+		}
+		public static Observation getObservation(String dir, String filename) {
+			String id = "";
+			double temp = Double.MIN_VALUE;    // in fahrenheit
+			int windDir = Integer.MIN_VALUE;   // in degrees
+			String description = "";
+			double pressure = Double.MIN_VALUE; // in mb
+			int humidity = Integer.MIN_VALUE; 
+			double windSpeed = Double.MIN_VALUE;
+			//private boolean shortDescription;
+			//added
+			String iconBase = "";
+			String iconFile = "";
+
+			// open file
+			try {
+				File csvFile = new File(dir + "/"+ filename);
+				Scanner fileReader = new Scanner(csvFile);
+
+				// Read row by row
+				// first row is column headers
+
+				boolean first = true;
+				String[] columnHeaders = null;
+				String[] observation = null;
+				while (fileReader.hasNextLine()) {
+					String line = fileReader.nextLine();
+					if (first) {
+						columnHeaders = line.split(",");
+						first = false;
+					}
+					else {
+						observation = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+						break;
+					}
+				}
+				//			// debug code
+				//			if (columnHeaders.length == observation.length) {
+				//				for (int i = 0; i < columnHeaders.length; i++) {
+				//					System.out.println(columnHeaders[i] + ":" + observation[i]);
+				//				}
+				//			}else {
+				//				System.out.println("Headers: " + columnHeaders.length);
+				//				System.out.println("Observation: " + observation.length);
+				//			}
+				// Extract Observation details
+				for (int i = 0; i < observation.length; i++) {
+					switch (columnHeaders[i]) {
+					case Observation.ID: id = observation[i];break;
+					case Observation.TEMPF: temp = Double.parseDouble(observation[i]);break;
+					case Observation.WINDDIR: windDir = Integer.parseInt(observation[i]);break;
+					case Observation.DESCRIPTION: description = observation[i];break;
+					case Observation.PRESSURE_MB: pressure = Double.parseDouble(observation[i]); break;
+					case Observation.HUMIDITY: humidity = Integer.parseInt(observation[i]); break;
+					case Observation.WINDSPEED_KTS: windSpeed = Double.parseDouble(observation[i]);break;
+					case Observation.ICONURL_BASE: iconBase = observation[i];break;
+					case Observation.ICONURL_FILE: iconFile = observation[i];break;
+					default: // skipping this piece of data 
+					}
+				} 
+				return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+		}
 }
