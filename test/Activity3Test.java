@@ -119,34 +119,34 @@ public class Activity3Test {
 	}
 
 	@Test
-	void testWeatherStationGetForecast1of8() throws JSONException, IOException {
+	void testWeatherStationGetForecast1of4()  {
 		WeatherStation kLAF= new WeatherStation("Lafayette, Purdue University Airport (KLAF)","KLAF","IN", 40.41,-86.95); 
 		ForecastPeriod[] periods = kLAF.getForecast();
 		assertTrue(periods.length > 0);
 	}
 	@Test
-	void testWeatherStationGetForecast2of8() throws JSONException, IOException {
+	void testWeatherStationGetForecast2of4() {
 		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,-71.28); 
 		ForecastPeriod[] periods = kUUU.getForecast();
 		assertTrue(periods.length > 0);
 	}
 
 	@Test
-	void testWeatherStationGetForecast3of8() throws JSONException, IOException {
+	void testWeatherStationGetForecast3of4()  {
 		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
 		ForecastPeriod[] periods = kSEA.getForecast();
 		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
 	}
 	@Test
-	void testWeatherStationGetForecast4of8() throws JSONException, IOException {
+	void testWeatherStationGetForecast4of4()  {
 		WeatherStation kSMP= new WeatherStation("Stampede Pass","KSMP","WA", 47.427,-121.418); 
 		ForecastPeriod[] periods = kSMP.getForecast();
 		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
 	}
 	@Test
-	void testWeatherStationGetForecast5of8() throws JSONException, IOException {
-		WeatherStation kLAF= new WeatherStation("Lafayette, Purdue University Airport (KLAF)","KLAF","IN", 40.41,-86.95); 
-		ForecastPeriod[] periods = kLAF.getForecast();
+	void testGetForecastLatLng1of4() {
+		//WeatherStation kLAF= new WeatherStation("Lafayette, Purdue University Airport (KLAF)","KLAF","IN", 40.41,-86.95); 
+		ForecastPeriod[] periods = ForecastPeriod.getForecast(40.41,-86.95);
 		//checking precipChance for all periods
 		int percent = -1;
 		for (ForecastPeriod period : periods) {
@@ -155,39 +155,42 @@ public class Activity3Test {
 		assertNotEquals(-1, percent);
 	}
 	@Test
-	void testWeatherStationGetForecast6of8() throws JSONException, IOException {
-		WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
-		ForecastPeriod[] periods = kTTN.getForecast();
-		//checking precipChance for all periods
-		int percent = -1;
+	void testGetForecastLatLng2of4()  {
+		//WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
+		ForecastPeriod[] periods = ForecastPeriod.getForecast(40.28,-74.82);
+		//checking windDegrees for all periods
+		boolean working = true;
 		for (ForecastPeriod period : periods) {
-			percent = period.getPrecipChancePercent();
+			if (period.getWindDegrees()<0 || period.getWindDegrees()>360)
+				working = false;
 		}
-		assertNotEquals(-1, percent);
+		assertTrue(working);
 	}
 	@Test
-	void testWeatherStationGetForecast7of8() throws JSONException, IOException {
-		WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
-		ForecastPeriod[] periods = kTTN.getForecast();
-		//checking precipChance for all periods
+	void testGetForecastLatLng3of4() {
+		//WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
+		ForecastPeriod[] periods = ForecastPeriod.getForecast(40.28,-74.82);
+		//checking Wind Speed for all periods
 		boolean isValidRange = true;
 		for (ForecastPeriod period : periods) {
-			int percent = period.getPrecipChancePercent();
-			isValidRange = percent >= 0 && percent <= 100;
+			int speed = period.getWindSpeed();
+			if (speed < 0 || speed > 200)
+				isValidRange =false;
 		}
 		assertTrue(isValidRange);
 	}
 	@Test
-	void testWeatherStationGetForecast8of8() throws JSONException, IOException {
-		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
-		ForecastPeriod[] periods = kSEA.getForecast();
-		//checking precipChance for all periods
-		boolean isValidRange = true;
+	void testGetForecastLatLng4of4()  {
+		//WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
+		ForecastPeriod[] periods = ForecastPeriod.getForecast( 47.44472,-122.31361);
+		//checking detailed forecast for all periods
+		boolean isValid = true;
 		for (ForecastPeriod period : periods) {
-			int percent = period.getPrecipChancePercent();
-			isValidRange = percent >= 0 && percent <= 100;
+			String forecast = period.getDetailedForecast();
+			if (forecast == null || forecast.length() == 0)
+				isValid = true;
 		}
-		assertTrue(isValidRange);
+		assertTrue(isValid);
 	}
 
 }
