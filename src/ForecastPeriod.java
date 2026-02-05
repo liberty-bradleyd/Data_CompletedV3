@@ -20,47 +20,49 @@ public class ForecastPeriod {
 	private int windSpeed;
 	private String windSpeedStr;
 	private String windDirection;
+	private double windDegrees;
 	private String icon;
 	private String shortForecast;
 	private String detailedForecast;
 
-	public ForecastPeriod(String name, String start, String end, int temp, 
-			String tempUnit, int precipChancePercent, 
-			String windSpeed, String windDirection, String icon, 
-			String shortForecast, String detailedForecast) {
-		this.name = name;
-		try {
-			// sample - "startTime": "2025-01-20T13:00:00-08:00"
-			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"); 
-			DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-			this.start = LocalDateTime.parse(start, formatter);
-			this.end = LocalDateTime.parse(end, formatter);
-		}catch(DateTimeParseException e){
-			System.out.println("Could not parse start or end time.");
-			System.out.println(e.toString());
-		}
-		// temp
-		this.temp = temp;
-		this.tempUnit = tempUnit;
-
-		// precip
-		//		if (precipChancePercent == null) {
-		//			this.precipChancePercent = 0;
-		//		}
-		//		else{
-		//this.precipChancePercent = Integer.parseInt(precipChancePercent);
-		this.precipChancePercent = precipChancePercent;
-		//		}
-		// wind
-		this.windSpeedStr = windSpeed;
-		this.windSpeed = Integer.parseInt(windSpeedStr.substring(0, windSpeedStr.indexOf(" ")));
-		this.windDirection = windDirection;
-
-		// niceities
-		this.icon = icon;
-		this.shortForecast = shortForecast;
-		this.detailedForecast = detailedForecast;
-	}
+	/**2025** for 2026 all parsing was moved to the paraseForecastJSON method */
+//	public ForecastPeriod(String name, String start, String end, int temp, 
+//			String tempUnit, int precipChancePercent, 
+//			String windSpeed, String windDirection, String icon, 
+//			String shortForecast, String detailedForecast) {
+//		this.name = name;
+//		try {
+//			// sample - "startTime": "2025-01-20T13:00:00-08:00"
+//			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ"); 
+//			DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+//			this.start = LocalDateTime.parse(start, formatter);
+//			this.end = LocalDateTime.parse(end, formatter);
+//		}catch(DateTimeParseException e){
+//			System.out.println("Could not parse start or end time.");
+//			System.out.println(e.toString());
+//		}
+//		// temp
+//		this.temp = temp;
+//		this.tempUnit = tempUnit;
+//
+//		// precip
+//		//		if (precipChancePercent == null) {
+//		//			this.precipChancePercent = 0;
+//		//		}
+//		//		else{
+//		//this.precipChancePercent = Integer.parseInt(precipChancePercent);
+//		this.precipChancePercent = precipChancePercent;
+//		//		}
+//		// wind
+//		this.windSpeedStr = windSpeed;
+//		this.windSpeed = Integer.parseInt(windSpeedStr.substring(0, windSpeedStr.indexOf(" ")));
+//		this.windDirection = windDirection;
+//
+//		// niceities
+//		this.icon = icon;
+//		this.shortForecast = shortForecast;
+//		this.detailedForecast = detailedForecast;
+//	}
 	/**2026**/
 	public ForecastPeriod(String name, LocalDateTime start, LocalDateTime end, int temp, 
 			String tempUnit, int precipChancePercent, 
@@ -81,11 +83,33 @@ public class ForecastPeriod {
 		// wind
 		this.windSpeed = windSpeed;
 		this.windDirection = windDirection;
-
+		this.windDegrees = convertCardinalToDegrees(windDirection);
+		
 		// niceities
 		this.icon = icon;
 		this.shortForecast = shortForecast;
 		this.detailedForecast = detailedForecast;
+	}
+	private double convertCardinalToDegrees(String windDirection) {
+		switch (windDirection) {
+		case "N": return 0;
+		case "NNE": return 22.5;
+		case "NE": return 45;
+		case "ENE": return 67.5;
+		case "E": return 90;
+		case "ESE": return 112.5;
+		case "SE": return 135;
+		case "SSE": return 157.5;
+		case "S": return 180;
+		case "SSW": return 202.5;
+		case "SW": return 225;
+		case "WSW": return 247.5;
+		case "W" : return 270;
+		case "WNW": return 292.5;
+		case "NW": return 315;
+		case "NNW": return 337.5;
+		default: return 0;		
+		}
 	}
 	public String getName() {
 		return name;
@@ -115,6 +139,10 @@ public class ForecastPeriod {
 	}
 	public String getWindDirection() {
 		return windDirection;
+	}
+	/** 2026 add **/
+	public double getWindDegrees() {
+		return windDegrees; 
 	}
 	public String getIcon() {
 		return icon;
@@ -150,13 +178,10 @@ public class ForecastPeriod {
 		catch(IOException e) {
 			System.out.println("Could not open URL for the forecast node");
 		}
-		System.out.println(json.toString());
-		return parseJSON(json);
+		return parseForecastJSON(json);
 	}
 
 	public static ForecastPeriod[] getForecast(String dir, String filename) {
-		//TODO
-		
 		// open file
 		File jsonFile = null;
 		String fileContents = "";
@@ -174,9 +199,9 @@ public class ForecastPeriod {
 		// convert to JSONObject
 		JSONObject json = new JSONObject(fileContents);
 		// parse it
-		return parseJSON(json);
+		return parseForecastJSON(json);
 	}
-	private static ForecastPeriod[] parseJSON(JSONObject json) {
+	protected static ForecastPeriod[] parseForecastJSON(JSONObject json) {
 		//System.out.println(json.toString());
 		JSONObject properties= json.getJSONObject("properties");
 		JSONArray periods = properties.getJSONArray("periods");
@@ -230,7 +255,13 @@ public class ForecastPeriod {
 
 	}
 	public static void main(String[] args) {
-		System.out.println(getForecast("data","centralPark.json").length);
-		System.out.println(getForecast(40.78, -73.97).length);
+		System.out.println("Central Park");
+		System.out.println(getForecast("data","centralPark.json")[0].getName() + ": " + getForecast("data","centralPark.json")[0].detailedForecast);
+		System.out.println(getForecast(40.78, -73.97)[0].getName() + ": "+ getForecast(40.78, -73.97)[0].detailedForecast);
+		
+		System.out.println();
+		System.out.println("Levi's Stadium - host of SB LX");
+		System.out.println(getForecast(37.403,-121.969)[0].getName() + ": " + getForecast(37.403,-121.969)[0].detailedForecast);
+		System.out.println(getForecast("data","sb_LX.json")[0].getName() + ": " + getForecast("data","sb_LX.json")[0].detailedForecast);
 	}
 }

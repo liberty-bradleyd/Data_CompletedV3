@@ -1,221 +1,205 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+ 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class Activity2Test {
-	static Activity2 botSEA;
-	static Observation obSEA;
-	static Activity2 botBOS;
-	static Observation obBOS;
+	static WeatherBureau accuBradley;
+	static WeatherStation[] stations;
+	static ArrayList<WeatherStation> stationsAsList;
+	static ArrayList<WeatherStation> waStations;
+	static ArrayList<WeatherStation> riStations;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		obSEA = Activity2.getObservation("KSEA");
-		obBOS = Activity2.getObservation("KBOS");
-	}
-
-	@Test
-	void testConstructor1of4() {
-		Observation ob = new Observation("KSEA","Light Rain",38.0,170,11.0,997.6,89);
-		assertEquals(38.0,ob.getTemp());
-	}
-	@Test
-	void testConstructor2of4() {
-		Observation ob = new Observation("KSEA","Light Rain",28.0,170,11.0,997.6,89);
-		assertEquals(89,ob.getHumidity());
-	}
-	@Test
-	void testConstructor3of4() {
-		Observation ob = new Observation("KSEA","Partly Cloudy",28.0,170,11.0,997.6,89, "http://www.iconstore.com/", "cloudy.ico");
-		assertEquals("http://www.iconstore.com/cloudy.ico",ob.getIconURL());
-	}
-
-	@Test
-	void testConstructor4of4() {
-		Observation ob = new Observation("KSEA","Light Rain",38.0,170,11.0,997.6,89, "http://www.iconstore.com/", "rain.ico");
-		assertEquals("http://www.iconstore.com/rain.ico",ob.getIconURL());
-	}
-
-
-	@Test
-	void testToString1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",38.0,170,10.0,997.6,89);
-		assertEquals("KSEA: 38.0 degrees; Light Rain (wind: 10.0 knots @ 170 degrees); barometric pressure: 997.6; relativity humidity: 89",ob.toString());
-	}
-	@Test
-	void testToString2of2() {
-		Observation obUUU = new Observation("KUUU","Sailing Time",74.0,170,23.9,998.4,49);
-		assertEquals("KUUU: 74.0 degrees; Sailing Time (wind: 23.9 knots @ 170 degrees); barometric pressure: 998.4; relativity humidity: 49",obUUU.toString());
-	}
-	// accessor methods
-	@Test
-	void testColderThan1of2() {
-		Observation obSEA = new Observation("KSEA","Light Rain Fog/Mist",39.0,190,11.0,997.6,89);
-		Observation obRNT = new Observation("KRNT","Light Rain",37.0,0,11.0,997.6,89);
-		assertFalse(obSEA.colderThan(obRNT));
-	}
-	@Test
-	void testColderThan2of2() {
-		Observation obSEA = new Observation("KSEA","Light Rain Fog/Mist",37.0,190,11.0,998.4,86);
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,0,0,998.4,89);
-		assertTrue(obSMP.colderThan(obSEA));
-	}
-	@Test
-	void testGetId1of2() {
-		Observation ob = new Observation("KS52","Light Rain",28.0,170,11.0,997.6,89);
-		assertEquals("KS52",ob.getId());
-	}
-
-	@Test
-	void testGetId2of2() {
-		Observation ob = new Observation("KSMP","Light Rain",28.0,170,11.0,997.6,89);
-		assertEquals("KSMP",ob.getId());
-	}
-	@Test
-	void testGetTemp1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",28.0,170,11.0,997.6,89);
-		assertEquals(28.0,ob.getTemp());
+		accuBradley = new WeatherBureau();
+		stations = accuBradley.getAllStationsArray();
+		stationsAsList = accuBradley.getAllStationsList();
+		waStations = accuBradley.getStationsInState("WA");
+		riStations = accuBradley.getStationsInState("RI");
 
 	}
 
 	@Test
-	void testGetTemp2of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals(14.0,ob.getTemp());
+	void testWeatherStation1of3() {
+		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,122.31361); 
+		assertEquals("KSEA",kSEA.getId());
+	}
+	@Test
+	void testWeatherStation2of3() {
+		WeatherStation kSMP= new WeatherStation("Stampede Pass","KSMP","WA", 47.427,121.418); 
+		assertEquals("Stampede Pass",kSMP.getName());
+	}
+	@Test
+	void testWeatherStation3of3() {
+		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,71.28); 
+		assertTrue(kUUU.isLocatedInState("RI"));
+	}
 
+	// non-zero size
+	@Test
+	void testGetAllStationsArray1of4() {
+		assertNotEquals(0,stations.length);
+	}
+
+	// More than 2600 stations
+	@Test
+	void testGetAllStationsArray2of4() {
+		assertTrue(stations.length > 2600);
+	}
+
+	// no null elements
+	@Test
+	void testGetAllStationsArray3of4() {
+		boolean isWorking = true;
+		for (WeatherStation ws : stations) {
+			if (ws == null) {
+				isWorking = false;
+			}
+		}
+		assertTrue(isWorking);
+	}
+	// contains KSEA
+	@Test
+	void testGetAllStationsArray4of4() {
+		boolean isWorking = false;
+		for (WeatherStation ws : stations) {
+			if (ws.getId().equals("KSEA")) {
+				isWorking = true;
+			}
+		}
+		assertTrue(isWorking);
+	}
+	// non-zero size
+	@Test
+	void testGetAllStationsList1of4() {
+		assertNotEquals(0,stationsAsList.size());
+	}
+
+	// More than 2600 stations
+	@Test
+	void testGetAllStationsList2of4() {
+		assertTrue(stationsAsList.size() > 2600);
+	}
+
+	// no null elements
+	@Test
+	void testGetAllStationsList3of4() {
+		boolean isWorking = true;
+		for (WeatherStation ws : stationsAsList) {
+			if (ws == null) {
+				isWorking = false;
+			}
+		}
+		assertTrue(isWorking);
+	}
+	// contains KSEA
+	@Test
+	void testGetAllStationsList4of4() {
+		boolean isWorking = false;
+		for (WeatherStation ws : stationsAsList) {
+			if (ws.getId().equals("KSEA")) {
+				isWorking = true;
+			}
+		}
+		assertTrue(isWorking);
+	}
+
+	@Test
+	void testGetStation1of2() {
+		assertEquals("KSEA",accuBradley.getStation("KSEA").getId());
+	}
+	@Test
+	void testGetStation2of2() {
+		assertEquals("KSMP",accuBradley.getStation("KSMP").getId());
+	}
+	@Test
+	void testGetCurrentObservation() {
+		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,122.31361); 
+		assertEquals("KSEA",kSEA.getCurrentObservation().getId());
+
+	}
+
+	// not the same size as all stations
+	@Test
+	void testGetStationsInState1of3() {
+		assertNotEquals(waStations.size(), stationsAsList.size());
+	}
+
+	// contains KSEA and KSMP
+	@Test
+	void testGetStationsInState2of3() {
+		int count = 0;
+		for (WeatherStation ws : waStations) {
+			if (ws.getId().equals("KSEA") || ws.getId().equals("KSMP")) {
+				count++;
+			}
+		}
+		assertEquals(2, count);
 	}
 	
+	// At least 40 station in WA
 	@Test
-	void testGetDescription1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals("Light Rain",ob.getDescription());
-		
-	}
-	@Test
-	void testGetDescription2of2() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,48,998.4,89);
-		assertEquals("Light snow",obSMP.getDescription());
+	void testGetStationsInState3of3() {
+		assertTrue(waStations.size() > 40);
 	}
 
 	@Test
-	void testGetHumidity1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals(89,ob.getHumidity());
-		
-	}
-	@Test
-	void testGetHumidity2of2() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,48,998.4,49);
-		assertEquals(49,obSMP.getHumidity());
-	}
-	@Test
-	void testGetIconURL1of2() {
-		Observation ob = new Observation("KSEA","Heavy Snow",28.0,170,11.0,997.6,89, "http://www.iconstore.com/", "snow.ico");
-		assertEquals("http://www.iconstore.com/snow.ico",ob.getIconURL());
-		
-	}
-	@Test
-	void testGetIconURL2of2() {
-		Observation ob = new Observation("KSEA","Partly Cloudy",28.0,170,11.0,997.6,89, "http://www.iconstore.com/", "cloudy.ico");
-		assertEquals("http://www.iconstore.com/cloudy.ico",ob.getIconURL());
+	void testGetColdestInState() {
+		//Use Rhode Island, so that it is faster
+		String state = "RI";
+		Observation ob = accuBradley.getColdestInState(state);
+		boolean isWorking = false;
+		for (WeatherStation station : riStations) {
+			if (station.getId().equals(ob.getId())) {
+				isWorking = true;
+			}
+		}
+		assertTrue(isWorking);
 	}
 
 	@Test
-	void testGetPressure1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals(997.6,ob.getPressure());
-		
-	}
-	@Test
-	void testGetPressure2of2() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,48,998.4,49);
-		assertEquals(998.4,obSMP.getPressure());
-	}
-	@Test
-	void testGetWindDir1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals(170,ob.getWindDir());
-		
-	}
-	@Test
-	void testGetWindDir2of2() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,270,48,998.4,49);
-		assertEquals(270,obSMP.getWindDir());
+	void testGetStationsInStateSortedByName1of2() {
+		WeatherStation[] stationsCopy = accuBradley.getStationsInStateSortedByName("WA");
+		boolean isWorking = true;
+		for (int i = 1; i < stationsCopy.length;i++) {
+			if (stationsCopy[i-1].getName().compareTo(stationsCopy[i].getName()) > 0) {
+				isWorking = false;
+			}
+		}
+		assertTrue(isWorking);
 	}
 
 	@Test
-	void testGetWindSpeed1of2() {
-		Observation ob = new Observation("KSEA","Light Rain",14.0,170,11.0,997.6,89);
-		assertEquals(11.0,ob.getWindSpeed());
-		
+	void testGetStationsInStateSortedByName2of2() {
+		WeatherStation[] stationsCopy = accuBradley.getStationsInStateSortedByName("WA");
+		assertEquals(waStations.size(),stationsCopy.length);
 	}
 	@Test
-	void testGetWindSpeed2of2() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,270,48,998.4,49);
-		assertEquals(48,obSMP.getWindSpeed());
-	}
-
-	@Test
-	void testGetBeaufortNumber1of3() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,48,998.4,89);
-		assertEquals(10,obSMP.getBeaufortNumber());
-	}
-
-	@Test
-	void testGetBeaufortNumber2of3() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,10,998.4,89);
-		assertEquals(3,obSMP.getBeaufortNumber());
-	}
-	@Test
-	void testGetBeaufortNumber3of3() {
-		Observation obSMP = new Observation("KSMP","Light snow",29.0,170,11.0,997.6,89);
-		assertEquals(4,obSMP.getBeaufortNumber());
+	void testInsertionSort() {
+		WeatherStation[] stationsCopy = makeCopy(stations);
+		accuBradley.insertionSort(stationsCopy);
+		boolean isWorking = true;
+		for (int i = 1; i < stationsCopy.length;i++) {
+			if (stationsCopy[i-1].getName().compareTo(stationsCopy[i].getName()) > 0) {
+				isWorking = false;
+			}
+		}
+		assertTrue(isWorking);
 	}
 
+	private WeatherStation[] makeCopy(WeatherStation[] stationsOrig) {
+		WeatherStation[] stationsCopy = new WeatherStation[stationsOrig.length];
+		for (int i = 0; i< stationsOrig.length;i++) {
+			stationsCopy[i] = stationsOrig[i];
+		}
+		return stationsCopy;
+	}
 	@Test
-	void testGetWindConditions1of4() {
-		//Hurricane IDA. 2021 strongest hurricane
-		Observation obHUM = new Observation("KHUM","Hurricane approaching",79.0,170,129,929,89);
-		assertEquals("Storm is coming",obHUM.getWindConditions());
-
+	void testGetStatesWithStations() {
+		assertTrue(accuBradley.getStatesWithStations().size() >= 91);
 	}
 
-	@Test
-	void testGetWindConditions2of4() {
-		//Newport, Rhode Island
-		Observation obUUU = new Observation("KUUU","Sailing Time",330,170,23.9,998.4,49);
-		assertEquals("Wind flags are out",obUUU.getWindConditions());
-
-	}
-	@Test
-	void testGetWindConditions3of4() {
-		Observation obRNT = new Observation("KRNT","Light Rain",37.0,0,11.0,997.6,89);
-		assertEquals("Nice breeze today",obRNT.getWindConditions());
-	}
-	@Test
-	void testGetWindConditions4of4() {
-		Observation obSEA = new Observation("KSEA","Light Rain Fog/Mist",37.0,190,11.0,998.4,86);
-		assertEquals("Nice breeze today",obSEA.getWindConditions());
-	}
-
-	@Test
-	void testgetObservation1of3() {
-		// Boston is the windiest big city in the US.
-		Observation ob = Activity2.getObservation("KBOS");
-		assertNotEquals(0,ob.getBeaufortNumber());
-	}
-	@Test
-	void testgetObservation2of3() {
-		// Boston is the windiest big city in the US.
-		Observation ob = Activity2.getObservation("KBOS");
-		assertEquals("KBOS",ob.getId());
-	}
-	@Test
-	void testgetObservation3of3() {
-		// Boston is the windiest big city in the US.
-		// International Falls, MN is typically the coldest in the US in winter
-		Observation obIntFalls = new Observation("KINL","Overcast with Haze",-24.0, 330,11.0,997.6,89);
-		assertTrue(obIntFalls.colderThan(obBOS));
-
-	}}
+}

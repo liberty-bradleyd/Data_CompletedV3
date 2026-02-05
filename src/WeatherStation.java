@@ -89,7 +89,7 @@ public class WeatherStation implements Comparable{
    }
    
    public Observation getCurrentObservation() {
-	   return Observation.getObservation(id);
+	   return new Observation(id);
 //	      DataSource ds = DataSource.connect("http://weather.gov/xml/current_obs/" + id + ".xml"); 
 //	      ds.setCacheTimeout(15 * 60);  
 //	      ds.load();
@@ -103,39 +103,10 @@ public class WeatherStation implements Comparable{
    public ForecastPeriod[] getForecast() {
 	   
 	   return ForecastPeriod.getForecast(lat, lng);
-//	   System.out.println(url);
-//	   JSONObject jsonGrid = JSONHelper.readJsonFromUrl("https://api.weather.gov/points/" + lat + "," + lng);
-//	   JSONObject propertiesGrid = jsonGrid.getJSONObject("properties");
-//	   // JSONObject json = JSONHelper.readJsonFromUrl("https://api.weather.gov/gridpoints/SEW/134,66/forecast");
-//	   JSONObject json = JSONHelper.rdoueadJsonFromUrl(propertiesGrid.getString("forecast"));
-//	    //System.out.println(json.toString());
-//	    JSONObject properties= json.getJSONObject("properties");
-//	    JSONArray periods = properties.getJSONArray("periods");
-//	    ForecastPeriod[] forecasts = new ForecastPeriod[periods.length()];
-//	    for (int i = 0; i < periods.length(); i++) {
-//	    	JSONObject current = periods.getJSONObject(i);
-//	    	// precip chance can either be null or a number, which isn't easily 
-//	    	// mappable to a java type.
-//	    	int precipChancePercent =0;
-//	    	try {
-//	    		precipChancePercent = current.getJSONObject("probabilityOfPrecipitation").getInt("value");
-//					
-//	    	}catch(Exception e) {
-//	    		//System.out.println("Precip chance is null");
-//	    	}
-//	    	forecasts[i] = new ForecastPeriod(current.getString("name"),
-//	    									  current.getString("startTime"),
-//	    									  current.getString("endTime"),
-//	    									  current.getInt("temperature"), 
-//	    									  current.getString("temperatureUnit"),
-//	    									  precipChancePercent,
-//	    									  current.getString("windSpeed"),
-//	    									  current.getString("windDirection"),
-//	    									  current.getString("icon"), 
-//	    									  current.getString("shortForecast"), 
-//	    									  current.getString("detailedForecast"));
-//	    }
-//	    return forecasts;
+	   /**for 2026 this parsing code was moved to the
+	    * ForecastPeriod.getForecast method to keep all parsing within that class
+	    * 
+	    */
 
    }
 	/**

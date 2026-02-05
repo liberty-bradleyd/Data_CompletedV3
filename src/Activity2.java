@@ -261,11 +261,21 @@ public class Activity2 {
 		//
 		//		System.out.println(ob2.getId() +": " + ob2.getWindConditions());
 		//		System.out.println(ob3.getId() +": " + ob3.getWindConditions());
-		Observation ob2 = Observation.getObservation("data", "krnt.csv");
+		Observation ob2 = new Observation("data", "krnt.csv");
 		System.out.println(ob2);
 
-		Observation ob4 = Observation.getObservation("KSEA");
+		Observation ob3 = new Observation("data", "kjrb.csv");
+		System.out.println(ob3);
+		Observation ob4 = new Observation("data", "ksea.csv");
 		System.out.println(ob4);
+
+		Observation ob5 = new Observation("data", "ksmp.csv");
+		System.out.println(ob5);
+		Observation ob6 = new Observation("data", "phog.csv");
+		System.out.println(ob6);
+
+		Observation ob8 = new Observation("KSEA");
+		System.out.println(ob8);
 	}
 
 

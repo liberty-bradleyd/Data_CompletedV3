@@ -1,205 +1,193 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
- 
+
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class Activity3Test {
-	static WeatherBureau accuBradley;
-	static WeatherStation[] stations;
-	static ArrayList<WeatherStation> stationsAsList;
-	static ArrayList<WeatherStation> waStations;
-	static ArrayList<WeatherStation> riStations;
+	static ForecastPeriod sammamish;
+	static ForecastPeriod purdue;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		accuBradley = new WeatherBureau();
-		stations = accuBradley.getAllStationsArray();
-		stationsAsList = accuBradley.getAllStationsList();
-		waStations = accuBradley.getStationsInState("WA");
-		riStations = accuBradley.getStationsInState("RI");
-
+		sammamish = new ForecastPeriod("Saturday Night", LocalDateTime.now(), LocalDateTime.now().plusHours(8), 27,
+				"F", 0, 
+				3, "ENE", "https://api.weather.gov/icons/land/night/skc?size=medium",
+				"Clear", "Clear, with a low around 27.");
+		purdue = new ForecastPeriod("This Afternoon", LocalDateTime.now(), LocalDateTime.now().plusHours(8), 26,
+				"F", 30,
+				13, "NW", "https://api.weather.gov/icons/land/day/snow,30?size=medium",
+				"Scattered Snow Showers",
+				"Scattered snow showers before 3pm. Mostly cloudy. High near 26, with temperatures falling to around 24 in the afternoon. Northwest wind around 13 mph, with gusts as high as 20 mph. Chance of precipitation is 30%.");
 	}
 
 	@Test
-	void testWeatherStation1of3() {
-		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,122.31361); 
-		assertEquals("KSEA",kSEA.getId());
+	void testConstructor1of20() {
+		assertEquals("Saturday Night",sammamish.getName());
 	}
 	@Test
-	void testWeatherStation2of3() {
-		WeatherStation kSMP= new WeatherStation("Stampede Pass","KSMP","WA", 47.427,121.418); 
-		assertEquals("Stampede Pass",kSMP.getName());
+	void testConstructor2of20() {
+		assertEquals("This Afternoon",purdue.getName());
 	}
 	@Test
-	void testWeatherStation3of3() {
-		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,71.28); 
-		assertTrue(kUUU.isLocatedInState("RI"));
+	void testConstructor3of20() {
+		assertEquals(LocalDateTime.now().getDayOfMonth(),sammamish.getStart().getDayOfMonth());
+	}
+	@Test
+	void testConstructor4of20() {
+		assertEquals(LocalDateTime.now().getDayOfYear(),purdue.getStart().getDayOfYear());
+	}
+	@Test
+	void testConstructor5of20() {
+		assertEquals(LocalDateTime.now().plusHours(8).getHour(),sammamish.getEnd().getHour());
+	}
+	@Test
+	void testConstructor6of20() {
+		assertEquals(DayOfWeek.THURSDAY,purdue.getEnd().getDayOfWeek());
+	}
+	@Test
+	void testConstructor7of20() {
+		assertEquals(27,sammamish.getTemp());
+	}
+	@Test
+	void testConstructor8of20() {
+		assertEquals(26,purdue.getTemp());
+	}
+	@Test
+	void testConstructor9of20() {
+		assertEquals("F",sammamish.getTempUnit());
+	}
+	@Test
+	void testConstructor10of20() {
+		assertEquals("F",purdue.getTempUnit());
 	}
 
-	// non-zero size
 	@Test
-	void testGetAllStationsArray1of4() {
-		assertNotEquals(0,stations.length);
+	void testConstructor11of20() {
+		assertEquals(3,sammamish.getWindSpeed());
+	}
+	@Test
+	void testConstructor12of20() {
+		assertEquals(13,purdue.getWindSpeed());
+	}
+	@Test
+	void testConstructor13of20() {
+		assertEquals("ENE",sammamish.getWindDirection());
+	}
+	@Test
+	void testConstructor14of20() {
+		assertEquals("NW",purdue.getWindDirection());
+	}
+	@Test
+	void testConstructor15of20() {
+		assertEquals(0,sammamish.getPrecipChancePercent());
+	}
+	@Test
+	void testConstructor16of20() {
+		assertEquals(30,purdue.getPrecipChancePercent());
+	}
+	@Test
+	void testConstructor17of20() {
+		assertEquals("Clear",sammamish.getShortForecast());
+	}
+	@Test
+	void testConstructor18of20() {
+		assertEquals("Scattered Snow Showers",purdue.getShortForecast());
+	}
+	@Test
+	void testConstructor19of20() {
+		assertEquals("Clear, with a low around 27.",sammamish.getDetailedForecast());
+	}
+	@Test
+	void testConstructor20of20() {
+		assertEquals("Scattered snow showers before 3pm. Mostly cloudy. High near 26, with temperatures falling to around 24 in the afternoon. Northwest wind around 13 mph, with gusts as high as 20 mph. Chance of precipitation is 30%.",purdue.getDetailedForecast());
+	}
+	@Test
+	void testGetWindDegrees1of2() {
+		assertEquals(67.5, sammamish.getWindDegrees());
+	}
+	@Test
+	void testGetWindDegrees2of2() {
+		assertEquals(315, purdue.getWindDegrees());
 	}
 
-	// More than 2600 stations
 	@Test
-	void testGetAllStationsArray2of4() {
-		assertTrue(stations.length > 2600);
+	void testWeatherStationGetForecast1of8() throws JSONException, IOException {
+		WeatherStation kLAF= new WeatherStation("Lafayette, Purdue University Airport (KLAF)","KLAF","IN", 40.41,-86.95); 
+		ForecastPeriod[] periods = kLAF.getForecast();
+		assertTrue(periods.length > 0);
+	}
+	@Test
+	void testWeatherStationGetForecast2of8() throws JSONException, IOException {
+		WeatherStation kUUU= new WeatherStation("Newport, Newport State Airport","KUUU","RI", 41.53,-71.28); 
+		ForecastPeriod[] periods = kUUU.getForecast();
+		assertTrue(periods.length > 0);
 	}
 
-	// no null elements
 	@Test
-	void testGetAllStationsArray3of4() {
-		boolean isWorking = true;
-		for (WeatherStation ws : stations) {
-			if (ws == null) {
-				isWorking = false;
-			}
+	void testWeatherStationGetForecast3of8() throws JSONException, IOException {
+		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
+		ForecastPeriod[] periods = kSEA.getForecast();
+		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
+	}
+	@Test
+	void testWeatherStationGetForecast4of8() throws JSONException, IOException {
+		WeatherStation kSMP= new WeatherStation("Stampede Pass","KSMP","WA", 47.427,-121.418); 
+		ForecastPeriod[] periods = kSMP.getForecast();
+		assertEquals(LocalDateTime.now(ZoneId.of("America/Los_Angeles")).getDayOfMonth(),periods[0].getStart().getDayOfMonth());
+	}
+	@Test
+	void testWeatherStationGetForecast5of8() throws JSONException, IOException {
+		WeatherStation kLAF= new WeatherStation("Lafayette, Purdue University Airport (KLAF)","KLAF","IN", 40.41,-86.95); 
+		ForecastPeriod[] periods = kLAF.getForecast();
+		//checking precipChance for all periods
+		int percent = -1;
+		for (ForecastPeriod period : periods) {
+			percent = period.getPrecipChancePercent();
 		}
-		assertTrue(isWorking);
+		assertNotEquals(-1, percent);
 	}
-	// contains KSEA
 	@Test
-	void testGetAllStationsArray4of4() {
-		boolean isWorking = false;
-		for (WeatherStation ws : stations) {
-			if (ws.getId().equals("KSEA")) {
-				isWorking = true;
-			}
+	void testWeatherStationGetForecast6of8() throws JSONException, IOException {
+		WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
+		ForecastPeriod[] periods = kTTN.getForecast();
+		//checking precipChance for all periods
+		int percent = -1;
+		for (ForecastPeriod period : periods) {
+			percent = period.getPrecipChancePercent();
 		}
-		assertTrue(isWorking);
+		assertNotEquals(-1, percent);
 	}
-	// non-zero size
 	@Test
-	void testGetAllStationsList1of4() {
-		assertNotEquals(0,stationsAsList.size());
-	}
-
-	// More than 2600 stations
-	@Test
-	void testGetAllStationsList2of4() {
-		assertTrue(stationsAsList.size() > 2600);
-	}
-
-	// no null elements
-	@Test
-	void testGetAllStationsList3of4() {
-		boolean isWorking = true;
-		for (WeatherStation ws : stationsAsList) {
-			if (ws == null) {
-				isWorking = false;
-			}
+	void testWeatherStationGetForecast7of8() throws JSONException, IOException {
+		WeatherStation kTTN= new WeatherStation("Trenton, Mercer County Airport (KTTN)","KTTN","NJ", 40.28,-74.82); 
+		ForecastPeriod[] periods = kTTN.getForecast();
+		//checking precipChance for all periods
+		boolean isValidRange = true;
+		for (ForecastPeriod period : periods) {
+			int percent = period.getPrecipChancePercent();
+			isValidRange = percent >= 0 && percent <= 100;
 		}
-		assertTrue(isWorking);
+		assertTrue(isValidRange);
 	}
-	// contains KSEA
 	@Test
-	void testGetAllStationsList4of4() {
-		boolean isWorking = false;
-		for (WeatherStation ws : stationsAsList) {
-			if (ws.getId().equals("KSEA")) {
-				isWorking = true;
-			}
+	void testWeatherStationGetForecast8of8() throws JSONException, IOException {
+		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,-122.31361); 
+		ForecastPeriod[] periods = kSEA.getForecast();
+		//checking precipChance for all periods
+		boolean isValidRange = true;
+		for (ForecastPeriod period : periods) {
+			int percent = period.getPrecipChancePercent();
+			isValidRange = percent >= 0 && percent <= 100;
 		}
-		assertTrue(isWorking);
-	}
-
-	@Test
-	void testGetStation1of2() {
-		assertEquals("KSEA",accuBradley.getStation("KSEA").getId());
-	}
-	@Test
-	void testGetStation2of2() {
-		assertEquals("KSMP",accuBradley.getStation("KSMP").getId());
-	}
-	@Test
-	void testGetCurrentObservation() {
-		WeatherStation kSEA= new WeatherStation("Seattle, Seattle-Tacoma International Airport","KSEA","WA", 47.44472,122.31361); 
-		assertEquals("KSEA",kSEA.getCurrentObservation().getId());
-
-	}
-
-	// not the same size as all stations
-	@Test
-	void testGetStationsInState1of3() {
-		assertNotEquals(waStations.size(), stationsAsList.size());
-	}
-
-	// contains KSEA and KSMP
-	@Test
-	void testGetStationsInState2of3() {
-		int count = 0;
-		for (WeatherStation ws : waStations) {
-			if (ws.getId().equals("KSEA") || ws.getId().equals("KSMP")) {
-				count++;
-			}
-		}
-		assertEquals(2, count);
-	}
-	
-	// At least 40 station in WA
-	@Test
-	void testGetStationsInState3of3() {
-		assertTrue(waStations.size() > 40);
-	}
-
-	@Test
-	void testGetColdestInState() {
-		//Use Rhode Island, so that it is faster
-		String state = "RI";
-		Observation ob = accuBradley.getColdestInState(state);
-		boolean isWorking = false;
-		for (WeatherStation station : riStations) {
-			if (station.getId().equals(ob.getId())) {
-				isWorking = true;
-			}
-		}
-		assertTrue(isWorking);
-	}
-
-	@Test
-	void testGetStationsInStateSortedByName1of2() {
-		WeatherStation[] stationsCopy = accuBradley.getStationsInStateSortedByName("WA");
-		boolean isWorking = true;
-		for (int i = 1; i < stationsCopy.length;i++) {
-			if (stationsCopy[i-1].getName().compareTo(stationsCopy[i].getName()) > 0) {
-				isWorking = false;
-			}
-		}
-		assertTrue(isWorking);
-	}
-
-	@Test
-	void testGetStationsInStateSortedByName2of2() {
-		WeatherStation[] stationsCopy = accuBradley.getStationsInStateSortedByName("WA");
-		assertEquals(waStations.size(),stationsCopy.length);
-	}
-	@Test
-	void testInsertionSort() {
-		WeatherStation[] stationsCopy = makeCopy(stations);
-		accuBradley.insertionSort(stationsCopy);
-		boolean isWorking = true;
-		for (int i = 1; i < stationsCopy.length;i++) {
-			if (stationsCopy[i-1].getName().compareTo(stationsCopy[i].getName()) > 0) {
-				isWorking = false;
-			}
-		}
-		assertTrue(isWorking);
-	}
-
-	private WeatherStation[] makeCopy(WeatherStation[] stationsOrig) {
-		WeatherStation[] stationsCopy = new WeatherStation[stationsOrig.length];
-		for (int i = 0; i< stationsOrig.length;i++) {
-			stationsCopy[i] = stationsOrig[i];
-		}
-		return stationsCopy;
-	}
-	@Test
-	void testGetStatesWithStations() {
-		assertTrue(accuBradley.getStatesWithStations().size() >= 91);
+		assertTrue(isValidRange);
 	}
 
 }

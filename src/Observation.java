@@ -44,33 +44,34 @@ public class Observation implements Comparable{
 	 * @param temp temperature
 	 * @param windDir wind direction in degrees
 	 */
+// **2025 change - removed this overload **/
 //	public Observation(String id, String description, double temp, int windDir) {
 //		this(id, description, temp, windDir,0,0,0);
 //		shortDescription = true;
 //	}
-
-	/**
-	 * Constructs an Observation object with the specified parameters.
-	 * toString will output a full observation, if this constructor is used.
-	 * @param the weather station id
-	 * @param description Short description of the current weather
-	 * @param temp temperature
-	 * @param windDir wind direction in degrees
-	 * @param windSpeed wind speed in knots
-	 * @param pressure barometric pressure in mb
-	 * @param humidity relative humidity
-	 */
-	public Observation(String id, String description, double temp, int windDir, double windSpeed, double pressure, int humidity) {
-		this.id = id;
-		this.description = description;
-		this.temp = temp;
-		this.windDir = windDir;
-		this.windSpeed = windSpeed;
-		this.pressure = pressure;
-		this.humidity = humidity;
-//		shortDescription = false;
-
-	}
+//
+//	/**
+//	 * Constructs an Observation object with the specified parameters.
+//	 * toString will output a full observation, if this constructor is used.
+//	 * @param the weather station id
+//	 * @param description Short description of the current weather
+//	 * @param temp temperature
+//	 * @param windDir wind direction in degrees
+//	 * @param windSpeed wind speed in knots
+//	 * @param pressure barometric pressure in mb
+//	 * @param humidity relative humidity
+//	 */
+//	public Observation(String id, String description, double temp, int windDir, double windSpeed, double pressure, int humidity) {
+//		this.id = id;
+//		this.description = description;
+//		this.temp = temp;
+//		this.windDir = windDir;
+//		this.windSpeed = windSpeed;
+//		this.pressure = pressure;
+//		this.humidity = humidity;
+////		shortDescription = false;
+//
+//	}
 
 	/**
 	 * Constructs an Observation object with the specified parameters.
@@ -259,7 +260,21 @@ public class Observation implements Comparable{
 		   }
 
 	   }
-		public static Observation getObservation(String stationID) {
+	   public String getWarning() {
+		   int beaufort = getBeaufortNumber();
+		   switch (beaufort) {
+		   case 12: return "Hurricane Warning";
+		   case 10:
+		   case 11: return "Storm Warning"; 
+		   case 6:
+		   case 7:
+		   case 8:
+		   case 9: return "Small Craft Advisory"; 
+		   default: return "";
+		   }
+	   }
+	   
+		public Observation(String stationID) {
 			Observation obs = null;
 			try {
 				// URL of the XML feed
@@ -285,13 +300,13 @@ public class Observation implements Comparable{
 
 				// Initialize the variables. It is possible that any given observation may be missing one or more
 				// observation details.
-				String id = ""; 
-				double temp = Double.MIN_VALUE;    // in fahrenheit
-				int windDir = Integer.MIN_VALUE;   // in degrees
-				String description = "";
-				double pressure = Double.MIN_VALUE; // in mb
-				int humidity = Integer.MIN_VALUE; 
-				double windSpeed = Double.MIN_VALUE;
+				 id = ""; 
+				 temp = Double.MIN_VALUE;    // in fahrenheit
+				 windDir = Integer.MIN_VALUE;   // in degrees
+				 description = "";
+				 pressure = Double.MIN_VALUE; // in mb
+				 humidity = Integer.MIN_VALUE; 
+				 windSpeed = Double.MIN_VALUE;
 				String iconBase = "";
 				String iconFile = "";
 
@@ -342,9 +357,9 @@ public class Observation implements Comparable{
 				if (iconFileList.getLength() > 0) {
 					iconFile = iconFileList.item(0).getTextContent();
 				}
-
+				this.iconURL = iconBase+iconFile;
 				xmlStream.close();
-				return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
+				//return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -352,16 +367,16 @@ public class Observation implements Comparable{
 
 
 
-			return obs;
+			//return obs;
 		}
-		public static Observation getObservation(String dir, String filename) {
-			String id = "";
-			double temp = Double.MIN_VALUE;    // in fahrenheit
-			int windDir = Integer.MIN_VALUE;   // in degrees
-			String description = "";
-			double pressure = Double.MIN_VALUE; // in mb
-			int humidity = Integer.MIN_VALUE; 
-			double windSpeed = Double.MIN_VALUE;
+		public Observation(String dir, String filename) {
+			 id = "";
+			 temp = Double.MIN_VALUE;    // in fahrenheit
+			 windDir = Integer.MIN_VALUE;   // in degrees
+			 description = "";
+			 pressure = Double.MIN_VALUE; // in mb
+			 humidity = Integer.MIN_VALUE; 
+			 windSpeed = Double.MIN_VALUE;
 			//private boolean shortDescription;
 			//added
 			String iconBase = "";
@@ -389,15 +404,6 @@ public class Observation implements Comparable{
 						break;
 					}
 				}
-				//			// debug code
-				//			if (columnHeaders.length == observation.length) {
-				//				for (int i = 0; i < columnHeaders.length; i++) {
-				//					System.out.println(columnHeaders[i] + ":" + observation[i]);
-				//				}
-				//			}else {
-				//				System.out.println("Headers: " + columnHeaders.length);
-				//				System.out.println("Observation: " + observation.length);
-				//			}
 				// Extract Observation details
 				for (int i = 0; i < observation.length; i++) {
 					switch (columnHeaders[i]) {
@@ -412,12 +418,13 @@ public class Observation implements Comparable{
 					case Observation.ICONURL_FILE: iconFile = observation[i];break;
 					default: // skipping this piece of data 
 					}
-				} 
-				return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
+				}
+				iconURL= iconBase+iconFile;
+				//return new Observation(id, description, temp, windDir, windSpeed, pressure, humidity, iconBase, iconFile);
 			}
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			return null;
+			//return null;
 		}
 }
